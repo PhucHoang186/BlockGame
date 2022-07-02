@@ -7,6 +7,9 @@ public class GridManager : MonoBehaviour
     public static GridManager Instance;
     Dictionary<Vector3, Node> grids;
     [SerializeField] GridGenerator gridGenerator;
+    [SerializeField] float nodeSize;
+    [SerializeField] List<EntityObject> entityObjects;
+    // Init player, object position
     void Awake()
     {
         if (Instance == null)
@@ -14,22 +17,56 @@ public class GridManager : MonoBehaviour
     }
     public void Init()
     {
-        gridGenerator.GridInit(grids);
+        grids = gridGenerator.GridInit(grids, nodeSize);
+        foreach(EntityObject entity in entityObjects)
+        {
+            if(grids.ContainsKey(entity.nodeId))
+            {
+                var newEntityObject = Instantiate(entity.entityPref);
+                var newEntity = newEntityObject.GetComponent<Entity>();
+                grids[entity.nodeId].PlaceObjectOnNode(newEntity);
+            }
+        }
         GameManager.Instance.SwitchState(GameState.PlayerTurn);
     }
 
-    public void SetGridNodeToVisited(GameObject Obj)
+    public void MoveToNode(Node _currentNode, Node _newNode, Entity _entity)
     {
-        if(grids.ContainsKey(Obj.transform.position))
+        _currentNode.ReleaseNode();
+        _newNode.PlaceObjectOnNode(_entity);
+    }
+
+    public Node GetNodeById(Vector3 _nodeId)
+    {
+        if (grids.ContainsKey(_nodeId))
         {
-            // grids[Obj.transform.position].PlaceObjectOnNode(Obj);
+            return grids[_nodeId];
+        }
+        else
+        {
+            return null;
         }
     }
-    public void ReleaseNodeFromVisited(GameObject Obj)
+
+    public Node GetNodeByPosition(Vector3 _pos)
     {
-        if(grids.ContainsKey(Obj.transform.position))
+        float x = _pos.x / nodeSize;
+        float y = _pos.y / nodeSize - 1;
+        float z = _pos.z / nodeSize;
+
+        if (grids.ContainsKey(_pos / nodeSize))
         {
-            grids[Obj.transform.position].ReleaseNode(Obj);
+            return grids[_pos / nodeSize];
         }
+        else
+        {
+            return null;
+        }
+    }
+
+    public Vector3 ConvertPositionToNodeID(Vector3 _pos)
+    {
+        Vector3 newId = new Vector3(_pos.x / nodeSize, 0f, _pos.z / nodeSize);
+        return newId;
     }
 }

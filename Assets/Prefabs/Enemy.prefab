@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 9166949385968024445}
   - component: {fileID: 8221313772643708115}
   m_Layer: 0
-  m_Name: Model
+  m_Name: KayKit Animated Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,6 +319,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5268270754287603053}
   - component: {fileID: 1178782183432299655}
+  - component: {fileID: 1816514863}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -353,10 +354,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c60f0838ad44d4892428b571f852ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0
-  rotateTime: 0
+  moveTime: 0.8
+  rotateTime: 0.1
   offset: {x: 0, y: 1, z: 0}
+  entityType: 1
   currentNodePlaced: {fileID: 0}
+  canMove: 0
+  canAttack: 0
+  enemyCanMove: 0
+--- !u!95 &1816514863
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4780422545475377111}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 03e621cb8f2134a419b0e7fb74454818, type: 3}
+  m_Controller: {fileID: 9100000, guid: 1f62da2af87d2704b8568dd20338750d, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5903660967645906349
 GameObject:
   m_ObjectHideFlags: 0

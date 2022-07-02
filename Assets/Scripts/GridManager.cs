@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
@@ -9,6 +9,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] GridGenerator gridGenerator;
     [SerializeField] float nodeSize;
     [SerializeField] List<EntityObject> entityObjects;
+
+    public List<Node> path;
     // Init player, object position
     void Awake()
     {
@@ -18,9 +20,9 @@ public class GridManager : MonoBehaviour
     public void Init()
     {
         grids = gridGenerator.GridInit(grids, nodeSize);
-        foreach(EntityObject entity in entityObjects)
+        foreach (EntityObject entity in entityObjects)
         {
-            if(grids.ContainsKey(entity.nodeId))
+            if (grids.ContainsKey(entity.nodeId))
             {
                 var newEntityObject = Instantiate(entity.entityPref);
                 var newEntity = newEntityObject.GetComponent<Entity>();
@@ -68,5 +70,37 @@ public class GridManager : MonoBehaviour
     {
         Vector3 newId = new Vector3(_pos.x / nodeSize, 0f, _pos.z / nodeSize);
         return newId;
+    }
+
+    public List<Node> GetNeighborNode(Node _node)
+    {
+        List<Node> neighborNodes = new List<Node>();
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                // if (i == 0 && j == 0)
+                if (Mathf.Abs(i) == Mathf.Abs(j))
+                    continue;
+                int x = _node.x + i;
+                int y = _node.y + j;
+                if (x >= 0 && x < gridGenerator.weight && y >= 0 && y < gridGenerator.height)
+                {
+                    neighborNodes.Add(grids[new Vector3(x, 0f, y)]);
+                }
+
+            }
+        }
+        return neighborNodes;
+    }
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.red;
+        foreach (var node in path)
+        {
+            Debug.Log(node.transform.position);
+            Gizmos.DrawCube(node.transform.position + new Vector3(0f, 2f, 0f), Vector3.one * nodeSize);
+        }
     }
 }

@@ -7,6 +7,7 @@ public class RotateBlock : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] LayerMask blockMask;
     [SerializeField] float rotateTime;
+    [SerializeField] float radius;
     private PlayerController playerController;
     private Collider[] colliders;
     void Start()
@@ -25,25 +26,24 @@ public class RotateBlock : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerController = other.GetComponent<PlayerController>();
+            Debug.Log("Collide with " + other.name);
             // playerController.isTrigger = true;
-            // PlayerController.OnfinishRotate += CheckOntriggerEnter;
+            PlayerController.ON_FINISH_MOVEMENT += CheckOntriggerEnter;
 
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Collide with " + other.name);
         if (other.gameObject.CompareTag("Player"))
         {
-            // PlayerController.OnfinishRotate -= CheckOntriggerEnter;
-
+            PlayerController.ON_FINISH_MOVEMENT -= CheckOntriggerEnter;
         }
     }
 
     public void CheckOntriggerEnter()
     {
-        colliders = (Physics.OverlapBox(transform.position, new Vector3(1.49f, 0.5f, 1.49f), Quaternion.identity, blockMask));
+        colliders = (Physics.OverlapBox(transform.position, new Vector3(radius, 0.5f, radius), Quaternion.identity, blockMask));
         Debug.Log(colliders.Length);
         if (colliders.Length > 0)
         {
@@ -60,6 +60,7 @@ public class RotateBlock : MonoBehaviour
     }
     void RotateBlockAngle(float _angle, float _rotateTime)
     {
+        Debug.Log("gO HERE");
         transform.DOPunchScale(new Vector3(-0.2f, -0.2f, -0.2f), _rotateTime * 0.5f, 0, 0);
 
         transform.DORotate(transform.eulerAngles + new Vector3(0f, _angle, 0f), _rotateTime).OnComplete(() =>
@@ -84,6 +85,6 @@ public class RotateBlock : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position + new Vector3(0f, 1f, 0f), Vector3.one * 3f);
+        Gizmos.DrawWireCube(transform.position + new Vector3(0f, 1f, 0f), Vector3.one * radius * 2);
     }
 }

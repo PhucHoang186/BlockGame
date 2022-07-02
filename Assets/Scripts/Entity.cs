@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using DG.Tweening;
 public enum EntityType
@@ -8,13 +8,16 @@ public enum EntityType
 }
 public class Entity : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public static Action ON_FINISH_MOVEMENT;
+
     [SerializeField] protected float moveTime;
     [SerializeField] protected float rotateTime;
     public Vector3 offset;
+    public EntityType entityType;
     public Node currentNodePlaced;
     protected Animator ani;
     public bool canMove;
+    public bool canAttack;
 
     public virtual void MoveToPosition(Vector3 _dir)
     {
@@ -24,17 +27,30 @@ public class Entity : MonoBehaviour
         Node newNode = gridManager.GetNodeById(newNodeId);
 
         //move
-        if (newNode == null)
+        if (newNode == null || newNode.isPlaced)
             return;
 
         canMove = false;
         transform.DORotateQuaternion(Quaternion.LookRotation(_dir), 0.5f);
         transform.DOJump(newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
         {
-            canMove = true;
+            ON_FINISH_MOVEMENT?.Invoke();
             gridManager.MoveToNode(this.currentNodePlaced, newNode, this);
         });
 
+    }
+
+    public IEnumerator AttackCoroutine()
+    {
+        canAttack = false;
+        ani.SetTrigger("Attack");
+        yield return new WaitForSeconds(ani.GetCurrentAnimatorClipInfo(0).Length);
+        canAttack = true;
+
+    }
+
+    public void AttacK()
+    {
     }
 }
 [System.Serializable]

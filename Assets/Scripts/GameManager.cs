@@ -11,7 +11,7 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    private GameState currentState = GameState.GenerateGrid;
+    public GameState currentState = GameState.GenerateGrid;
 
     void Awake()
     {
@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
                 PlayerController.Instance.HandlePlayerTurn();
                 break;
             case GameState.EnemyTurn:
+                EnemyController.Instance.HandleEnemyTurn();
                 break;
             default:
                 break;

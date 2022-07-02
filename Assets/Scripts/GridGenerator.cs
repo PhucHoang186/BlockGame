@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GridGenerator : MonoBehaviour
 {
-    [SerializeField] int height;
-    [SerializeField] int weight;
+    public int height;
+    public int weight;
     [SerializeField] Node nodePref;
 
 
@@ -18,13 +18,15 @@ public class GridGenerator : MonoBehaviour
 
     void GenerateGrid(int _height, int _weight, Dictionary<Vector3, Node> _grids, float _nodeSize)
     {
-        for (int i = 0; i < _height; i++)
+        for (int i = 0; i < weight; i++)
         {
-            for (int j = 0; j < _weight; j++)
+            for (int j = 0; j < height; j++)
             {
                 Node newNode = Instantiate(nodePref);
                 newNode.transform.parent = transform;
                 newNode.transform.position = new Vector3(i, 0f, j) * _nodeSize;
+                newNode.x = i;
+                newNode.y = j;
                 _grids.Add(new Vector3(i, 0f, j), newNode);
             }
         }

@@ -6,7 +6,8 @@ public class EnemyController : Entity
 {
     public static EnemyController Instance;
     public bool enemyCanMove;
-
+    public PlayerController playerTarget;
+    // private trans
     void Awake()
     {
         if (Instance == null)
@@ -16,6 +17,8 @@ public class EnemyController : Entity
     void Start()
     {
         ani = GetComponent<Animator>();
+        var playerObj =GameObject.FindGameObjectWithTag("Player");
+        playerTarget = playerObj.GetComponent<PlayerController>();
         canAttack = true;
     }
 
@@ -23,7 +26,6 @@ public class EnemyController : Entity
     {
         if (!enemyCanMove || !canAttack)
             return;
-        MoveBlock();
         if (Input.GetKeyDown(KeyCode.X))
             StartCoroutine(AttackCoroutine());
     }
@@ -31,7 +33,13 @@ public class EnemyController : Entity
     public void HandleEnemyTurn()
     {
         enemyCanMove = true;
-        PathFinding.Instance.FindPath(this.currentNodePlaced, GridManager.Instance.GetNodeById(new Vector3(9f,0f,5f)));
+        PathFinding.Instance.FindPath(this.currentNodePlaced, playerTarget.currentNodePlaced);
+        if(GridManager.Instance.path.Count>1)
+            MoveToNode(GridManager.Instance.path[0]);
+        else if(GridManager.Instance.path.Count == 1)
+        {
+            StartCoroutine(AttackCoroutine());
+        }
     }
 
     public override void MoveToPosition(Vector3 _dir)
@@ -41,16 +49,28 @@ public class EnemyController : Entity
         var newNodeId = gridManager.ConvertPositionToNodeID(transform.position) + _dir;
         Node newNode = gridManager.GetNodeById(newNodeId);
 
+        transform.DORotateQuaternion(Quaternion.LookRotation(_dir), 0.5f);
         //move
         if (newNode == null || newNode.isPlaced)
             return;
 
-        transform.DORotateQuaternion(Quaternion.LookRotation(_dir), 0.5f);
+        enemyCanMove = false;
         transform.DOJump(newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
         {
             // ON_FINISH_MOVEMENT?.Invoke();
-            enemyCanMove = false;
             gridManager.MoveToNode(this.currentNodePlaced, newNode, this);
+            GameManager.Instance.SwitchState(GameState.PlayerTurn); 
+        });
+    }
+
+    public void MoveToNode(Node _newNode)
+    {
+        GridManager gridManager = GridManager.Instance;
+        transform.DOJump(_newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
+        {
+            // ON_FINISH_MOVEMENT?.Invoke();
+            enemyCanMove = false;
+            gridManager.MoveToNode(this.currentNodePlaced, _newNode, this);
             GameManager.Instance.SwitchState(GameState.PlayerTurn); 
         });
     }

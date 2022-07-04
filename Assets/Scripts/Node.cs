@@ -7,7 +7,8 @@ public class Node : MonoBehaviour
 
     [HideInInspector] public float gCost;
     [HideInInspector] public float hCost;
-    [HideInInspector] public float fCost
+    [HideInInspector]
+    public float fCost
     {
         get
         {
@@ -29,9 +30,10 @@ public class Node : MonoBehaviour
         currentObjectPlaced = _entity;
         _entity.currentNodePlaced = this;
         currentObjectPlaced.transform.position = transform.position + currentObjectPlaced.offset;
-        isPlaced = true;
         if (_entity.entityType != EntityType.Object)
             ToggleHighlightNode(true);
+        else
+            isPlaced = true;
     }
     public void ReleaseNode()
     {

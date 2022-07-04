@@ -99,7 +99,6 @@ public class GridManager : MonoBehaviour
         Gizmos.color = Color.red;
         foreach (var node in path)
         {
-            Debug.Log(node.transform.position);
             Gizmos.DrawCube(node.transform.position + new Vector3(0f, 2f, 0f), Vector3.one * nodeSize);
         }
     }

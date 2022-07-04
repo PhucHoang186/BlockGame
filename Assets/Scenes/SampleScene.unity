@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.183025, g: 0.22870962, b: 0.3067547, a: 1}
+  m_IndirectSpecularColor: {r: 0.24785511, g: 0.2836661, b: 0.34622836, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -535,7 +535,13 @@ MonoBehaviour:
     nodeId: {x: 0, y: 0, z: 0}
   - entityPref: {fileID: 4780422545475377111, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
     entityType: 1
-    nodeId: {x: 9, y: 0, z: 9}
+    nodeId: {x: 5, y: 0, z: 5}
+  - entityPref: {fileID: 2646181284071782613, guid: a573093a7a6edcb4f95df3cca7296df2, type: 3}
+    entityType: 1
+    nodeId: {x: 7, y: 0, z: 8}
+  - entityPref: {fileID: 2646181284071782613, guid: a573093a7a6edcb4f95df3cca7296df2, type: 3}
+    entityType: 1
+    nodeId: {x: 3, y: 0, z: 1}
   path: []
 --- !u!1001 &1346324462
 PrefabInstance:

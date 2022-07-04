@@ -41,15 +41,15 @@ public class PlayerController : Entity
         var newNodeId = gridManager.ConvertPositionToNodeID(transform.position) + _dir;
         Node newNode = gridManager.GetNodeById(newNodeId);
 
+        transform.DORotateQuaternion(Quaternion.LookRotation(_dir), 0.5f);
         //move
         if (newNode == null || newNode.isPlaced)
             return;
 
-        transform.DORotateQuaternion(Quaternion.LookRotation(_dir), 0.5f);
+        playerCanMove = false;
         transform.DOJump(newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
         {
             // ON_FINISH_MOVEMENT?.Invoke();
-            playerCanMove = false;
             gridManager.MoveToNode(this.currentNodePlaced, newNode, this);
             GameManager.Instance.SwitchState(GameState.EnemyTurn);
         });

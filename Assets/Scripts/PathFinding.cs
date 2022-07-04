@@ -30,7 +30,6 @@ public class PathFinding : MonoBehaviour
             closeNodeList.Add(currentNode);
             if (currentNode == _endNode)
             {
-                Debug.LogError("go here");
                 RetracePath(_startNode, _endNode);
                 return;
             }
@@ -46,7 +45,6 @@ public class PathFinding : MonoBehaviour
                     neighborNode.parent = currentNode;
                     if (!openNodeList.Contains(neighborNode))
                     {
-                        Debug.Log(neighborNode);
                         openNodeList.Add(neighborNode);
                     }
                 }
@@ -74,7 +72,6 @@ public class PathFinding : MonoBehaviour
         if (dstX > dstY)
             return 14 * dstY + 10 * (dstX - dstY);
 
-        // return Vector3.Distance(nodeA.transform.position,nodeB.transform.position);
         return 14 * dstX + 10 * (dstY - dstX);
     }
 }

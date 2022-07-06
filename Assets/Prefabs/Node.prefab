@@ -106,7 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2646181284071782571}
   - component: {fileID: 2646181284071782570}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Node
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,6 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c62d13f839d6b45bc9085b2f544463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gCost: 0
+  hCost: 0
+  parent: {fileID: 0}
+  x: 0
+  y: 0
   currentObjectPlaced: {fileID: 0}
   isPlaced: 0
   highlightNodeOn: {fileID: 814971414342924128}
@@ -282,6 +287,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bd30ccdebfeb5884092d474c480777c0, type: 3}
       propertyPath: m_Name
       value: tileMedium_teamBlue
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bd30ccdebfeb5884092d474c480777c0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd30ccdebfeb5884092d474c480777c0, type: 3}

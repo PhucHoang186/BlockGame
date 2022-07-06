@@ -23,6 +23,18 @@ public class Node : MonoBehaviour
     public Entity currentObjectPlaced;
     public bool isPlaced;
     [SerializeField] GameObject highlightNodeOn;
+
+    public void Init(LayerMask blockLayer, LayerMask EntityLayer)
+    {
+        if (Physics.Raycast(transform.position, Vector3.up,out RaycastHit hit, 1.5f))
+        {
+            if(hit.transform.CompareTag("Block"))
+            {
+                hit.transform.gameObject.GetComponent<Entity>();
+            }
+        }
+    }
+
     public void PlaceObjectOnNode(Entity _entity)
     {
         if (isPlaced)

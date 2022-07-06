@@ -8,6 +8,8 @@ public class GridGenerator : MonoBehaviour
     public int weight;
     [SerializeField] Node nodePref;
 
+    public LayerMask BlockLayer;
+    public LayerMask EntityLayer;
 
     public Dictionary<Vector3, Node> GridInit(Dictionary<Vector3, Node> _grids, float _nodeSize)
     {

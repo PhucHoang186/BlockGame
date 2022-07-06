@@ -42,34 +42,12 @@ public class EnemyController : Entity
         }
     }
 
-    public override void MoveToPosition(Vector3 _dir)
-    {
-            //convert position to node id
-        GridManager gridManager = GridManager.Instance;
-        var newNodeId = gridManager.ConvertPositionToNodeID(transform.position) + _dir;
-        Node newNode = gridManager.GetNodeById(newNodeId);
-
-        transform.DORotateQuaternion(Quaternion.LookRotation(_dir), 0.5f);
-        //move
-        if (newNode == null || newNode.isPlaced)
-            return;
-
-        enemyCanMove = false;
-        transform.DOJump(newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
-        {
-            // ON_FINISH_MOVEMENT?.Invoke();
-            gridManager.MoveToNode(this.currentNodePlaced, newNode, this);
-            GameManager.Instance.SwitchState(GameState.PlayerTurn); 
-        });
-    }
-
     public void MoveToNode(Node _newNode)
     {
         GridManager gridManager = GridManager.Instance;
+            enemyCanMove = false;
         transform.DOJump(_newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
         {
-            // ON_FINISH_MOVEMENT?.Invoke();
-            enemyCanMove = false;
             gridManager.MoveToNode(this.currentNodePlaced, _newNode, this);
             GameManager.Instance.SwitchState(GameState.PlayerTurn); 
         });

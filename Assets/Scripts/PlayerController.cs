@@ -21,7 +21,7 @@ public class PlayerController : Entity
 
     void Update()
     {
-        if (!playerCanMove || !canAttack)
+        if (!canMove || !canAttack)
             return;
         MoveBlock();
         if (Input.GetKeyDown(KeyCode.X))
@@ -46,7 +46,7 @@ public class PlayerController : Entity
         if (newNode == null || newNode.isPlaced)
             return;
 
-        playerCanMove = false;
+        canMove = false;
         transform.DOJump(newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
         {
             // ON_FINISH_MOVEMENT?.Invoke();

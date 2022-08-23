@@ -21,7 +21,7 @@ public class PlayerController : Entity
 
     void Update()
     {
-        if (!canMove || !canAttack)
+        if (!playerCanMove || !canAttack)
             return;
         MoveBlock();
         if (Input.GetKeyDown(KeyCode.X))
@@ -57,7 +57,6 @@ public class PlayerController : Entity
 
     void MoveBlock()
     {
-
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             MoveToPosition(Vector3.forward);

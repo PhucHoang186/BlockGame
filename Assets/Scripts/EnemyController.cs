@@ -5,7 +5,6 @@ using DG.Tweening;
 public class EnemyController : Entity
 {
     public static EnemyController Instance;
-    public bool enemyCanMove;
     public PlayerController playerTarget;
     // private trans
     void Awake()
@@ -17,61 +16,38 @@ public class EnemyController : Entity
     void Start()
     {
         ani = GetComponent<Animator>();
-        var playerObj =GameObject.FindGameObjectWithTag("Player");
+        var playerObj = GameObject.FindGameObjectWithTag("Player");
         playerTarget = playerObj.GetComponent<PlayerController>();
         canAttack = true;
     }
 
     void Update()
     {
-        if (!enemyCanMove || !canAttack)
+        if (!canMove || !canAttack)
             return;
-        if (Input.GetKeyDown(KeyCode.X))
-            StartCoroutine(AttackCoroutine());
     }
 
     public void HandleEnemyTurn()
     {
-        enemyCanMove = true;
+        canMove = true;
         PathFinding.Instance.FindPath(this.currentNodePlaced, playerTarget.currentNodePlaced);
-        if(GridManager.Instance.path.Count>1)
-            MoveToNode(GridManager.Instance.path[0]);
-        else if(GridManager.Instance.path.Count == 1)
+        if (GridManager.Instance.path.Count > 1)
+            MoveToNode(GridManager.Instance.path[0], GameState.PlayerTurn);
+        else
         {
-            StartCoroutine(AttackCoroutine());
+            AttacK();
         }
     }
 
-    public void MoveToNode(Node _newNode)
+    public override void AttacK()
     {
-        GridManager gridManager = GridManager.Instance;
-            enemyCanMove = false;
-        transform.DOJump(_newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
-        {
-            gridManager.MoveToNode(this.currentNodePlaced, _newNode, this);
-            GameManager.Instance.SwitchState(GameState.PlayerTurn); 
-        });
+        base.AttacK();
+        GameManager.Instance?.SwitchState(GameState.PlayerTurn);
     }
 
-    void MoveBlock()
-    {
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            MoveToPosition(Vector3.forward);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            MoveToPosition(Vector3.back);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            MoveToPosition(Vector3.left);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            MoveToPosition(Vector3.right);
-        }
-        return;
+    public override void MoveToNode(Node _newNode, GameState _newState)
+    {
+        base.MoveToNode(_newNode, _newState);
     }
 }

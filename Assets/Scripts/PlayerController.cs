@@ -6,7 +6,6 @@ using DG.Tweening;
 public class PlayerController : Entity
 {
     public static PlayerController Instance;
-    public bool playerCanMove;
     void Awake()
     {
         if (Instance == null)
@@ -21,57 +20,47 @@ public class PlayerController : Entity
 
     void Update()
     {
-        if (!playerCanMove || !canAttack)
+        if (!canMove || !canAttack)
             return;
         MoveBlock();
         if (Input.GetKeyDown(KeyCode.X))
-            StartCoroutine(AttackCoroutine());
+            AttacK();
     }
 
     public void HandlePlayerTurn()
     {
-        playerCanMove = true;
+        canMove = true;
 
     }
 
-    public override void MoveToPosition(Vector3 _dir)
+    public override void MoveToDirection(Vector3 _dir, GameState _newState)
     {
-        //convert position to node id
-        GridManager gridManager = GridManager.Instance;
-        var newNodeId = gridManager.ConvertPositionToNodeID(transform.position) + _dir;
-        Node newNode = gridManager.GetNodeById(newNodeId);
+        base.MoveToDirection(_dir, _newState);
+    }
 
-        transform.DORotateQuaternion(Quaternion.LookRotation(_dir), 0.5f);
-        //move
-        if (newNode == null || newNode.isPlaced)
-            return;
-
-        canMove = false;
-        transform.DOJump(newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
-        {
-            // ON_FINISH_MOVEMENT?.Invoke();
-            gridManager.MoveToNode(this.currentNodePlaced, newNode, this);
-            GameManager.Instance.SwitchState(GameState.EnemyTurn);
-        });
+    public override void AttacK()
+    {
+        base.AttacK();
+        GameManager.Instance?.SwitchState(GameState.EnemyTurn);
     }
 
     void MoveBlock()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            MoveToPosition(Vector3.forward);
+            MoveToDirection(Vector3.forward, GameState.EnemyTurn);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            MoveToPosition(Vector3.back);
+            MoveToDirection(Vector3.back, GameState.EnemyTurn);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            MoveToPosition(Vector3.left);
+            MoveToDirection(Vector3.left, GameState.EnemyTurn);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            MoveToPosition(Vector3.right);
+            MoveToDirection(Vector3.right, GameState.EnemyTurn);
         }
         return;
     }

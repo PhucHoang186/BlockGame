@@ -43,9 +43,10 @@ public class Node : MonoBehaviour
         _entity.currentNodePlaced = this;
         currentObjectPlaced.transform.position = transform.position + currentObjectPlaced.offset;
         if (_entity.entityType != EntityType.Object)
+        {
             ToggleHighlightNode(true);
-        else
-            isPlaced = true;
+        }
+        isPlaced = true;
     }
     public void ReleaseNode()
     {

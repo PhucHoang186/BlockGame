@@ -19,25 +19,27 @@ public class Entity : MonoBehaviour
     public bool canMove;
     public bool canAttack;
 
-    public virtual void MoveToPosition(Vector3 _dir)
+    public virtual void MoveToDirection(Vector3 _dir, GameState _newState)
     {
         //convert position to node id
         GridManager gridManager = GridManager.Instance;
         var newNodeId = gridManager.ConvertPositionToNodeID(transform.position) + _dir;
         Node newNode = gridManager.GetNodeById(newNodeId);
-
         //move
-        if (newNode == null || newNode.isPlaced)
-            return;
+        MoveToNode(newNode, _newState);
+    }
 
+    public virtual void MoveToNode(Node _newNode, GameState _newState)
+    {
         canMove = false;
-        transform.DORotateQuaternion(Quaternion.LookRotation(_dir), 0.5f);
-        transform.DOJump(newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
+        transform.DORotateQuaternion(Quaternion.LookRotation(_newNode.transform.position - currentNodePlaced.transform.position), 0.5f);
+        if (_newNode == null || _newNode.isPlaced)
+            return;
+        transform.DOJump(_newNode.transform.position + offset, 0.5f, 1, moveTime).SetEase(Ease.InBack).OnComplete(() =>
         {
-            ON_FINISH_MOVEMENT?.Invoke();
-            gridManager.MoveToNode(this.currentNodePlaced, newNode, this);
+            GridManager.Instance.MoveToNode(this.currentNodePlaced, _newNode, this);
+            GameManager.Instance.SwitchState(_newState);
         });
-
     }
 
     public IEnumerator AttackCoroutine()
@@ -49,8 +51,9 @@ public class Entity : MonoBehaviour
 
     }
 
-    public void AttacK()
+    public virtual void AttacK()
     {
+        StartCoroutine(AttackCoroutine());
     }
 }
 [System.Serializable]

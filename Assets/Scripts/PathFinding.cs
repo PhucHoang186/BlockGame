@@ -35,7 +35,7 @@ public class PathFinding : MonoBehaviour
             }
             foreach (var neighborNode in GridManager.Instance.GetNeighborNode(currentNode))
             {
-                if (neighborNode.isPlaced || closeNodeList.Contains(neighborNode))
+                if ((neighborNode.isPlaced && neighborNode.currentObjectPlaced.entityType == EntityType.Object) || closeNodeList.Contains(neighborNode))
                     continue;
                 float newMovementCostToNeighborNode = currentNode.gCost + GetDistance(currentNode, neighborNode);
                 if (newMovementCostToNeighborNode < neighborNode.gCost || !openNodeList.Contains(neighborNode))

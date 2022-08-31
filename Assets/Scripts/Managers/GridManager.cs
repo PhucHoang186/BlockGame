@@ -84,6 +84,29 @@ public class GridManager : MonoBehaviour
         }
         return neighborNodes;
     }
+
+    public List<Node> GetNeighborNodeHasEntity(Node _node)
+    {
+        List<Node> neighborNodes = new List<Node>();
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (Mathf.Abs(i) == Mathf.Abs(j))
+                    continue;
+                int x = _node.x + i;
+                int y = _node.y + j;
+                if (x >= 0 && x < gridGenerator.weight && y >= 0 && y < gridGenerator.height)
+                {
+                    if(grids[new Vector3(x, 0f, y)].currentObjectPlaced?.GetComponent<Entity>())
+                        neighborNodes.Add(grids[new Vector3(x, 0f, y)]);
+                }
+
+            }
+        }
+        return neighborNodes;
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

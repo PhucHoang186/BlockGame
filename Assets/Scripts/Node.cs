@@ -25,7 +25,8 @@ public class Node : MonoBehaviour
     public bool canMove;
     [SerializeField] Transform checkPoint;
     [SerializeField] SpriteRenderer highlightSprite;
-    [SerializeField] SpriteRenderer toggleSprite;
+    [SerializeField] SpriteRenderer hoverSprite;
+    [SerializeField] SpriteRenderer attackSprite;
     [SerializeField] private LayerMask entityLayer;
     [SerializeField] private LayerMask nodeLayer;
 
@@ -66,17 +67,22 @@ public class Node : MonoBehaviour
     {
         currentObjectPlaced = null;
         isPlaced = false;
-        ToggleHighlightNode(false);
+        ToggleHighlight(false);
     }
-    public void ToggleHighlightNode(bool _isActive)
+    public void ToggleHighlight(bool _isActive)
     {
         highlightSprite.gameObject.SetActive(_isActive);
     }
 
-    private void OnMouseHover(bool _isActive)
+    public void ToggleHover(bool _isActive)
     {
-        if (_isActive != toggleSprite.gameObject.activeSelf)
-            toggleSprite.gameObject.SetActive(_isActive);
+        if (_isActive != hoverSprite.gameObject.activeSelf)
+            hoverSprite.gameObject.SetActive(_isActive);
+    }
+
+    public void ToggleAttack(bool _isActive)
+    {
+        attackSprite.gameObject.SetActive(_isActive);
     }
 
     void OnMouseEnter()
@@ -86,12 +92,14 @@ public class Node : MonoBehaviour
 
     void OnMouseExit()
     {
-        OnMouseHover(false);
+        ToggleHover(false);
+        ToggleAttack(false);
     }
 
     void OnMouseOver()
     {
-        OnMouseHover(GameManager.Instance.currentState == GameState.PlayerTurn);
+        ToggleHover(GameManager.Instance.currentState == GameState.PlayerTurn  && currentObjectPlaced == null);
+        ToggleAttack(currentObjectPlaced != null && currentObjectPlaced.entityType != EntityType.Player);
         if (Input.GetMouseButtonDown(0))
         {
             if (canMove)

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
+
 public class EnemyController : MoveableEntity
 {
     public static EnemyController Instance;
@@ -22,9 +24,6 @@ public class EnemyController : MoveableEntity
         currentHealth = maxHealth;
     }
 
-    void Update()
-    {
-    }
 
     public void HandleEnemyTurn()
     {
@@ -43,6 +42,30 @@ public class EnemyController : MoveableEntity
         base.AttacK(_newState);
     }
 
+    private bool DetectTarget()
+    {
+        return false;
+    }
+
+    public override IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
+    {
+         int moveStep = 0;
+        SetTriggerAnimation(Run);        
+
+        while (moveStep < moveRange)
+        {
+            moveStep += 1;
+
+            MoveToNode(_path.FirstOrDefault());
+            if (_path.Count > 0)
+                _path.RemoveAt(0);
+            AttacK(_newState);
+            yield return new WaitForSeconds(moveTime);
+        }
+        canMove = false;
+        GameManager.Instance.SwitchState(_newState);
+        SetTriggerAnimation(Idle);
+    }
 
     public override void MoveToNode(Node _newNode)
     {

@@ -29,7 +29,7 @@ public class MoveableEntity : Entity, IDamageable
         StartCoroutine(MoveToPathCroutine(_path, _newState));
     }
 
-    public IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
+    public virtual IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
     {
         int moveStep = 0;
         SetTriggerAnimation(Run);        
@@ -66,10 +66,10 @@ public class MoveableEntity : Entity, IDamageable
     public virtual void AttacK(GameState _newState)
     {
         // find the direction to attack
-        var neighborNodes = GridManager.Instance.GetNeighborNode(currentNodePlaced);
+        var neighborNodes = GridManager.Instance.GetNeighborNodeHasEntity(currentNodePlaced);
         foreach (Node node in neighborNodes)
         {
-            if (node.isPlaced && (node.currentObjectPlaced.entityType == EntityType.Player || node.currentObjectPlaced.entityType == EntityType.Enemy))
+            if (node.isPlaced && (node.currentObjectPlaced.GetComponent<MoveableEntity>()))
             {
                 transform.DORotateQuaternion(Quaternion.LookRotation(node.transform.position - currentNodePlaced.transform.position), 0.5f).OnComplete(()
                 =>
@@ -126,11 +126,11 @@ public class MoveableEntity : Entity, IDamageable
 
     #region Animation
 
-    private static readonly int Idle = Animator.StringToHash("Character_Idle");
-    private static readonly int Attack = Animator.StringToHash("Character_Attack");
-    private static readonly int Run = Animator.StringToHash("Character_Run");
+    public static readonly int Idle = Animator.StringToHash("Character_Idle");
+    public static readonly int Attack = Animator.StringToHash("Character_Attack");
+    public static readonly int Run = Animator.StringToHash("Character_Run");
 
-    private void SetTriggerAnimation(int _state, float _transitionTime = 0f)
+    protected void SetTriggerAnimation(int _state, float _transitionTime = 0f)
     {
         ani.CrossFade(_state, _transitionTime, 0);
     }

@@ -64,7 +64,7 @@ public class PlayerController : MoveableEntity
             var path = PathFinding.Instance.FindPath(currentNodePlaced, node);
             if (path?.Count > 0 && path?.Count <= moveRange)
             {
-                node.ToggleHighlightNode(true);
+                node.ToggleHighlight(true);
                 node.canMove = true;
             }
         }
@@ -74,7 +74,7 @@ public class PlayerController : MoveableEntity
     {
         foreach (Node node in inRangeNodes)
         {
-            node.ToggleHighlightNode(false);
+            node.ToggleHighlight(false);
             node.canMove = false;
         }
         inRangeNodes.Clear();
@@ -87,6 +87,4 @@ public class PlayerController : MoveableEntity
     {
         base.AttacK(_newState);
     }
-
-
 }

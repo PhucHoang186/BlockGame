@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class EnemyController : Entity
+public class EnemyController : MoveableEntity
 {
     public static EnemyController Instance;
     public PlayerController playerTarget;
@@ -19,12 +19,11 @@ public class EnemyController : Entity
         var playerObj = GameObject.FindGameObjectWithTag("Player");
         playerTarget = playerObj.GetComponent<PlayerController>();
         canAttack = true;
+        currentHealth = maxHealth;
     }
 
     void Update()
     {
-        if (!canMove || !canAttack)
-            return;
     }
 
     public void HandleEnemyTurn()
@@ -32,22 +31,21 @@ public class EnemyController : Entity
         canMove = true;
         PathFinding.Instance.FindPath(this.currentNodePlaced, playerTarget.currentNodePlaced);
         if (GridManager.Instance.path.Count > 1)
-            MoveToNode(GridManager.Instance.path[0], GameState.PlayerTurn);
+            MoveToPath(GridManager.Instance.path, GameState.PlayerTurn);
         else
         {
-            AttacK();
+            AttacK(GameState.PlayerTurn);
         }
     }
 
-    public override void AttacK()
+    public override void AttacK(GameState _newState)
     {
-        base.AttacK();
-        GameManager.Instance?.SwitchState(GameState.PlayerTurn);
+        base.AttacK(_newState);
     }
 
 
-    public override void MoveToNode(Node _newNode, GameState _newState)
+    public override void MoveToNode(Node _newNode)
     {
-        base.MoveToNode(_newNode, _newState);
+        base.MoveToNode(_newNode);
     }
 }

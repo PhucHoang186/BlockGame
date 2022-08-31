@@ -11,8 +11,9 @@ public class PathFinding : MonoBehaviour
             Instance = this;
     }
 
-    public void FindPath(Node _startNode, Node _endNode)
+    public List<Node> FindPath(Node _startNode, Node _endNode)
     {
+        GridManager.Instance.path.Clear();
         List<Node> openNodeList = new List<Node>();
         List<Node> closeNodeList = new List<Node>();
         openNodeList.Add(_startNode);
@@ -30,12 +31,11 @@ public class PathFinding : MonoBehaviour
             closeNodeList.Add(currentNode);
             if (currentNode == _endNode)
             {
-                RetracePath(_startNode, _endNode);
-                return;
+                return RetracePath(_startNode, _endNode);
             }
             foreach (var neighborNode in GridManager.Instance.GetNeighborNode(currentNode))
             {
-                if ((neighborNode.isPlaced && neighborNode.currentObjectPlaced.entityType == EntityType.Object) || closeNodeList.Contains(neighborNode))
+                if ((neighborNode.isPlaced && !(neighborNode.currentObjectPlaced.entityType == EntityType.Player || neighborNode.currentObjectPlaced.entityType == EntityType.Collectable)) || closeNodeList.Contains(neighborNode))
                     continue;
                 float newMovementCostToNeighborNode = currentNode.gCost + GetDistance(currentNode, neighborNode);
                 if (newMovementCostToNeighborNode < neighborNode.gCost || !openNodeList.Contains(neighborNode))
@@ -50,9 +50,10 @@ public class PathFinding : MonoBehaviour
                 }
             }
         }
+        return null;
     }
 
-    public void RetracePath(Node _startNode, Node _endNode)
+    public List<Node> RetracePath(Node _startNode, Node _endNode)
     {
         List<Node> path = new List<Node>();
         Node currentNode = _endNode;
@@ -63,6 +64,7 @@ public class PathFinding : MonoBehaviour
         }
         path.Reverse();
         GridManager.Instance.path = path;
+        return path;
     }
 
     public float GetDistance(Node nodeA, Node nodeB)

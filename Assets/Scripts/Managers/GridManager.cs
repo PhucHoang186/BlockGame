@@ -8,7 +8,7 @@ public class GridManager : MonoBehaviour
     Dictionary<Vector3, Node> grids;
     [SerializeField] GridGenerator gridGenerator;
     [SerializeField] float nodeSize;
-    [SerializeField] List<EntityObject> entityObjects;
+    // [SerializeField] List<EntityObject> entityObjects;
 
     public List<Node> path;
     // Init player, object position
@@ -20,15 +20,6 @@ public class GridManager : MonoBehaviour
     public void Init()
     {
         grids = gridGenerator.GridInit(grids, nodeSize);
-        foreach (EntityObject entity in entityObjects)
-        {
-            if (grids.ContainsKey(entity.nodeId))
-            {
-                var newEntityObject = Instantiate(entity.entityPref);
-                var newEntity = newEntityObject.GetComponent<Entity>();
-                grids[entity.nodeId].PlaceObjectOnNode(newEntity);
-            }
-        }
         GameManager.Instance.SwitchState(GameState.PlayerTurn);
     }
 
@@ -95,7 +86,6 @@ public class GridManager : MonoBehaviour
     }
     void OnDrawGizmos()
     {
-        // Draw a yellow sphere at the transform's position
         Gizmos.color = Color.red;
         foreach (var node in path)
         {

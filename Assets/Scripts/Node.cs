@@ -19,20 +19,33 @@ public class Node : MonoBehaviour
     public int x;
     public int y;
 
+    [Header("Properties")]
     public Entity currentObjectPlaced;
     public bool isPlaced;
     public bool canMove;
+    [SerializeField] Transform checkPoint;
     [SerializeField] SpriteRenderer highlightSprite;
     [SerializeField] SpriteRenderer toggleSprite;
+    [SerializeField] private LayerMask entityLayer;
+    [SerializeField] private LayerMask nodeLayer;
 
-    public void Init(LayerMask blockLayer, LayerMask EntityLayer)
+    public void Init()
     {
-        if (Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, 1.5f))
+        // get object place on Node
+        var colliders = Physics.OverlapSphere(checkPoint.position, 1f, entityLayer);
+        if (colliders.Length > 0)
         {
-            if (hit.transform.CompareTag("Block"))
+            Entity entity = colliders[0].transform.gameObject.GetComponent<Entity>();
+            if (entity)
             {
-                hit.transform.gameObject.GetComponent<Entity>();
+                PlaceObjectOnNode(entity);
+                entity.currentNodePlaced = this;
             }
+        }
+        // get Node
+        if (Physics.OverlapSphere(transform.position, 1f, nodeLayer).Length == 0)
+        {
+            Destroy(this);
         }
     }
 
@@ -62,7 +75,7 @@ public class Node : MonoBehaviour
 
     private void OnMouseHover(bool _isActive)
     {
-        if(_isActive != toggleSprite.gameObject.activeSelf)
+        if (_isActive != toggleSprite.gameObject.activeSelf)
             toggleSprite.gameObject.SetActive(_isActive);
     }
 

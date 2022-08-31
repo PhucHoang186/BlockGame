@@ -27,9 +27,13 @@ public class GridGenerator : MonoBehaviour
                 Node newNode = Instantiate(nodePref);
                 newNode.transform.parent = transform;
                 newNode.transform.position = new Vector3(i, 0f, j) * _nodeSize;
-                newNode.x = i;
-                newNode.y = j;
-                _grids.Add(new Vector3(i, 0f, j), newNode);
+                newNode.Init();
+                if (newNode)
+                {
+                    newNode.x = i;
+                    newNode.y = j;
+                    _grids.Add(new Vector3(i, 0f, j), newNode);
+                }
             }
         }
     }

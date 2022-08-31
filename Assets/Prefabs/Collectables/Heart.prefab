@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4355891456831681498}
   - component: {fileID: 2901230218276315432}
   - component: {fileID: 5325606089857909002}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Heart
-  m_TagString: Block
+  m_TagString: Entity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

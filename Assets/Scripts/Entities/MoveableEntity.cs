@@ -41,7 +41,6 @@ public class MoveableEntity : Entity, IDamageable
             MoveToNode(_path.FirstOrDefault());
             if (_path.Count > 0)
                 _path.RemoveAt(0);
-            AttacK(_newState);
             yield return new WaitForSeconds(moveTime);
         }
         canMove = false;
@@ -66,7 +65,11 @@ public class MoveableEntity : Entity, IDamageable
 
     public virtual void AttacK(GameState _newState)
     {
-        // find the direction to attack
+        CheckAttackRange(_newState);
+    }
+
+    private void CheckAttackRange(GameState _newState)
+    {
         var neighborNodes = GridManager.Instance.GetNeighborNodeHasEntity(currentNodePlaced);
         foreach (Node node in neighborNodes)
         {

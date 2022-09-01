@@ -41,6 +41,7 @@ public class MoveableEntity : Entity, IDamageable
             MoveToNode(_path.FirstOrDefault());
             if (_path.Count > 0)
                 _path.RemoveAt(0);
+            AttacK(_newState);
             yield return new WaitForSeconds(moveTime);
         }
         canMove = false;

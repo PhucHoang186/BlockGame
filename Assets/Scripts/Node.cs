@@ -87,7 +87,7 @@ public class Node : MonoBehaviour
 
     void OnMouseEnter()
     {
-        // OnMouseHover(true);
+        ToggleHover(true);
     }
 
     void OnMouseExit()
@@ -96,16 +96,22 @@ public class Node : MonoBehaviour
         ToggleAttack(false);
     }
 
+
+
     void OnMouseOver()
     {
-        ToggleHover(GameManager.Instance.currentState == GameState.PlayerTurn  && currentObjectPlaced == null);
-        ToggleAttack(currentObjectPlaced != null && currentObjectPlaced.entityType != EntityType.Player);
+        // ToggleHover(GameManager.Instance.currentState == GameState.PlayerTurn  && currentObjectPlaced == null);
+        ToggleAttack(currentObjectPlaced != null && currentObjectPlaced.entityType != EntityType.Player && currentObjectPlaced.GetComponent<MoveableEntity>());
         if (Input.GetMouseButtonDown(0))
         {
             if (canMove)
             {
                 PathFinding.Instance.FindPath(PlayerController.Instance.currentNodePlaced, this);
                 PlayerController.ON_SELECT_PATH?.Invoke(GridManager.Instance.path, GameState.EnemyTurn);
+            }
+            else if (currentObjectPlaced != null && currentObjectPlaced.entityType != EntityType.Player && currentObjectPlaced.GetComponent<MoveableEntity>())
+            {
+                PlayerController.Instance.AttacK(GameState.EnemyTurn);
             }
         }
     }

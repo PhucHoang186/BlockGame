@@ -50,6 +50,11 @@ public class Node : MonoBehaviour
         }
     }
 
+    public bool IsMoveableNode()
+    {
+        return currentObjectPlaced.entityType == EntityType.Player || currentObjectPlaced.entityType == EntityType.Collectable; 
+    }
+
     public void PlaceObjectOnNode(Entity _entity)
     {
         if (isPlaced)
@@ -100,8 +105,6 @@ public class Node : MonoBehaviour
 
     void OnMouseOver()
     {
-        // ToggleHover(GameManager.Instance.currentState == GameState.PlayerTurn  && currentObjectPlaced == null);
-        ToggleAttack(currentObjectPlaced != null && currentObjectPlaced.entityType != EntityType.Player && currentObjectPlaced.GetComponent<MoveableEntity>());
         if (Input.GetMouseButtonDown(0))
         {
             if (canMove)

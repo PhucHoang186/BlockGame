@@ -70,7 +70,6 @@ public class GridManager : MonoBehaviour
         {
             for (int j = -1; j <= 1; j++)
             {
-                // if (i == 0 && j == 0)
                 if (Mathf.Abs(i) == Mathf.Abs(j))
                     continue;
                 int x = _node.x + i;
@@ -79,7 +78,6 @@ public class GridManager : MonoBehaviour
                 {
                     neighborNodes.Add(grids[new Vector3(x, 0f, y)]);
                 }
-
             }
         }
         return neighborNodes;

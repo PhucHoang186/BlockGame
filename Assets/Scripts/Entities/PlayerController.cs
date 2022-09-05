@@ -44,6 +44,7 @@ public class PlayerController : MoveableEntity
 
     private void ToggleMoveableNode(Node _startNode)
     {
+        inRangeNodes.Clear();
         List<Node> previousStepNodes = new List<Node>();
         inRangeNodes.Add(_startNode);
         previousStepNodes.Add(_startNode);
@@ -64,8 +65,15 @@ public class PlayerController : MoveableEntity
             var path = PathFinding.Instance.FindPath(currentNodePlaced, node);
             if (path?.Count > 0 && path?.Count <= moveRange)
             {
-                node.ToggleHighlight(true);
-                node.canMove = true;
+                if (node.currentObjectPlaced != null && node.currentObjectPlaced.GetComponent<MoveableEntity>())
+                {
+                    node.ToggleAttack(true);
+                }
+                else
+                {
+                    node.ToggleHighlight(true);
+                    node.canMove = true;
+                }
             }
         }
     }
@@ -75,9 +83,9 @@ public class PlayerController : MoveableEntity
         foreach (Node node in inRangeNodes)
         {
             node.ToggleHighlight(false);
+            node.ToggleAttack(false);
             node.canMove = false;
         }
-        inRangeNodes.Clear();
 
         base.MoveToPath(_path, _newState);
     }

@@ -30,7 +30,7 @@ public class VisualGrid : MonoBehaviour
     {
         foreach (Node node in _listNodes)
         {
-            node.visualNode.ToggleNodeVisual(true, _visualType);
+            // node.visualNode.ToggleNodeVisual(true, _visualType);
         }
     }
 
@@ -38,7 +38,7 @@ public class VisualGrid : MonoBehaviour
     {
         foreach (KeyValuePair<Vector3, Node> pair in GridManager.Instance.GetGrid)
         {
-            pair.Value.visualNode.ToggleNodeVisual(false, VisualNodeType.All);
+            // pair.Value.visualNode.ToggleNodeVisual(false, VisualNodeType.All);
         }
     }
 }

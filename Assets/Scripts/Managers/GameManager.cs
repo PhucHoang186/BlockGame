@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
             Instance = this;
     }
     void Start()
@@ -31,13 +31,23 @@ public class GameManager : MonoBehaviour
                 GridManager.Instance.Init();
                 break;
             case GameState.PlayerTurn:
-                PlayerController.Instance.HandlePlayerTurn();
+                HandlePlayerTurn();
                 break;
             case GameState.EnemyTurn:
-                EnemyController.Instance.HandleEnemyTurn();
+                HandleEnemyTurn();
                 break;
             default:
                 break;
         }
+    }
+
+    private void HandlePlayerTurn()
+    {
+        PlayerController.Instance.HandlePlayerTurn();
+    }
+
+    private void HandleEnemyTurn()
+    {
+        EnemyController.Instance.HandleEnemyTurn();
     }
 }

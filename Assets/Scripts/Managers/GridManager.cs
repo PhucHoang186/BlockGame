@@ -9,8 +9,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] GridGenerator gridGenerator;
     [SerializeField] float nodeSize;
     // [SerializeField] List<EntityObject> entityObjects;
-
     public List<Node> path;
+    public Dictionary<Vector3, Node> GetGrid => grids;
     // Init player, object position
     void Awake()
     {
@@ -20,6 +20,7 @@ public class GridManager : MonoBehaviour
     public void Init()
     {
         grids = gridGenerator.GridInit(grids, nodeSize);
+        VisualGrid.Instance.Init();
         GameManager.Instance.SwitchState(GameState.PlayerTurn);
     }
 
@@ -57,7 +58,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public Vector3 ConvertPositionToNodeID(Vector3 _pos)
+    public Vector3 GetNodeIDByPosition(Vector3 _pos)
     {
         Vector3 newId = new Vector3(_pos.x / nodeSize, 0f, _pos.z / nodeSize);
         return newId;
@@ -82,6 +83,26 @@ public class GridManager : MonoBehaviour
         }
         return neighborNodes;
     }
+    public List<Node> GetNodesInRange(Node _startNode, int _range)
+    {
+        List<Node> inRangeNodes = new List<Node>();
+        List<Node> previousStepNodes = new List<Node>();
+        inRangeNodes.Add(_startNode);
+        previousStepNodes.Add(_startNode);
+        int step = 0;
+        while (step < _range)
+        {
+            var neighborNodes = new List<Node>();
+            foreach (Node node in previousStepNodes)
+            {
+                neighborNodes.AddRange(GridManager.Instance.GetNeighborNode(node));
+            }
+            inRangeNodes.AddRange(neighborNodes);
+            previousStepNodes = neighborNodes;
+            step++;
+        }
+        return inRangeNodes;
+    }
 
     public List<Node> GetNeighborNodeHasEntity(Node _node)
     {
@@ -99,7 +120,6 @@ public class GridManager : MonoBehaviour
                     if(grids[new Vector3(x, 0f, y)].currentObjectPlaced?.GetComponent<Entity>())
                         neighborNodes.Add(grids[new Vector3(x, 0f, y)]);
                 }
-
             }
         }
         return neighborNodes;

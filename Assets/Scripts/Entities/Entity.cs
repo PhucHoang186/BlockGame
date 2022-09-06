@@ -14,12 +14,10 @@ public class Entity : MonoBehaviour
     public EntityType entityType;
     public Node currentNodePlaced;
     protected Animator ani;
+
+    public EntityType GetEntityType()
+    {
+        return entityType;
+    }
 }
-    
-[System.Serializable]
-public class EntityObject
-{
-    public GameObject entityPref;
-    public EntityType entityType;
-    public Vector3 nodeId;
-}
+

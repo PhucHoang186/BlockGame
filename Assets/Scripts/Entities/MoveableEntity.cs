@@ -9,7 +9,7 @@ public class MoveableEntity : Entity, IDamageable
     public static Action ON_FINISH_MOVEMENT;
     [SerializeField] protected float moveTime;
     [SerializeField] protected float rotateTime;
-    public float moveRange = 2f;
+    public int moveRange = 2;
     public bool canMove;
     public bool canAttack;
     public float damageAmount = 0;

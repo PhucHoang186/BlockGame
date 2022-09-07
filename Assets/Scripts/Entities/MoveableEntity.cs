@@ -118,7 +118,7 @@ public class MoveableEntity : Entity, IDamageable
     public virtual void MinusHealth(int _healthAmount)
     {
         CurrentHealth -= _healthAmount;
-        if (currentHealth < 0)
+        if (currentHealth <= 0)
         {
             CurrentHealth = 0;
             Destroy(this.gameObject);
@@ -127,7 +127,6 @@ public class MoveableEntity : Entity, IDamageable
 
     public virtual void TakeDamage(int _damageAmount)
     {
-        Debug.LogError(_damageAmount);
         MinusHealth(_damageAmount);
     }
     #endregion

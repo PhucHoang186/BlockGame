@@ -6,11 +6,10 @@ public class HealthDisplay : MonoBehaviour
 {
     [SerializeField] Image healthImg;
     [SerializeField] Transform healthContainer;
-    private List<Image> healthList;
+    private List<Image> healthList = new List<Image>();
 
     void Awake()
     {
-        healthList = new List<Image>();
         GameEvents.ON_HEALTH_CHANGED += UpdateHealthUI;
     }
 
@@ -19,13 +18,9 @@ public class HealthDisplay : MonoBehaviour
         GameEvents.ON_HEALTH_CHANGED -= UpdateHealthUI;
     }
 
-    public void UpdateHealthUI(int _amount)
+    public void UpdateHealthUI(int _newHealth)
     {
-        // var currentHealth = healthList.Count - _amount;
-        var currentHealth =  _amount - healthList.Count;
-        Debug.LogError("amount " + _amount);
-        Debug.LogError("healthList " + healthList.Count);
-        Debug.LogError("currentHealth " + currentHealth);
+        var currentHealth = _newHealth - healthList.Count;
         if (currentHealth > 0)
         {
             for (int i = 0; i < currentHealth; i++)
@@ -33,12 +28,15 @@ public class HealthDisplay : MonoBehaviour
                 healthList.Add(Instantiate(healthImg, healthContainer));
             }
         }
-        else if(currentHealth < 0)
+        else if (currentHealth < 0)
         {
-            currentHealth = Mathf.Abs(currentHealth);
-            for (int i = 0; i < currentHealth; i++)
+            for (int i = 0; i < -currentHealth; i++)
             {
-                Destroy(healthList.LastOrDefault());
+                Destroy(healthList.LastOrDefault().gameObject);
+                if (healthList.Count > 0)
+                {
+                    healthList.RemoveAt(healthList.Count - 1);
+                }
             }
         }
     }

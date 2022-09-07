@@ -12,13 +12,16 @@ public class MoveableEntity : Entity, IDamageable
     public int moveRange = 2;
     public bool canMove;
     public bool canAttack;
-    public float damageAmount = 0;
-    public float maxHealth = 10f;
-    protected float currentHealth;
-    public float CurrentHealth
+    public int damageAmount = 0;
+    public int maxHealth = 10;
+    protected int currentHealth;
+    public virtual int CurrentHealth
     {
         get { return currentHealth; }
-        set { currentHealth = value; }
+        set
+        {
+            currentHealth = value;
+        }
     }
 
 
@@ -32,7 +35,7 @@ public class MoveableEntity : Entity, IDamageable
     public virtual IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
     {
         int moveStep = 0;
-        SetTriggerAnimation(Run);        
+        SetTriggerAnimation(Run);
 
         while (moveStep < moveRange)
         {
@@ -68,7 +71,7 @@ public class MoveableEntity : Entity, IDamageable
         CheckAttackRange(_newState);
     }
 
-    private void CheckAttackRange(GameState _newState)
+    public void CheckAttackRange(GameState _newState)
     {
         var neighborNodes = GridManager.Instance.GetNeighborNodeHasEntity(currentNodePlaced);
         foreach (Node node in neighborNodes)
@@ -106,24 +109,25 @@ public class MoveableEntity : Entity, IDamageable
 
     #region Health
 
-    public virtual void AddHealth(float _healthAmount)
+    public virtual void AddHealth(int _healthAmount)
     {
-        currentHealth += _healthAmount;
-        if (currentHealth > maxHealth) currentHealth = maxHealth;
+        CurrentHealth += _healthAmount;
+        if (currentHealth > maxHealth) CurrentHealth = maxHealth;
     }
 
-    public virtual void MinusHealth(float _healthAmount)
+    public virtual void MinusHealth(int _healthAmount)
     {
-        currentHealth -= _healthAmount;
+        CurrentHealth -= _healthAmount;
         if (currentHealth < 0)
         {
-            currentHealth = 0;
+            CurrentHealth = 0;
             Destroy(this.gameObject);
         }
     }
 
-    public virtual void TakeDamage(float _damageAmount)
+    public virtual void TakeDamage(int _damageAmount)
     {
+        Debug.LogError(_damageAmount);
         MinusHealth(_damageAmount);
     }
     #endregion
@@ -138,7 +142,5 @@ public class MoveableEntity : Entity, IDamageable
     {
         ani.CrossFade(_state, _transitionTime, 0);
     }
-
     #endregion
-
 }

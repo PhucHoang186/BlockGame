@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Heart : CollectableEntity
 {
-    [SerializeField] float healthAmount;
+    [SerializeField] int healthAmount;
 
     public override void OnCollected(Entity _entity)
     {

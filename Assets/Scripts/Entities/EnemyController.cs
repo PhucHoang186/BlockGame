@@ -21,7 +21,7 @@ public class EnemyController : MoveableEntity
         var playerObj = GameObject.FindGameObjectWithTag("Player");
         playerTarget = playerObj.GetComponent<PlayerController>();
         canAttack = true;
-        currentHealth = maxHealth;
+        CurrentHealth = maxHealth;
     }
 
 

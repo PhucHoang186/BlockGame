@@ -7,6 +7,6 @@ public class Heart : CollectableEntity
 
     public override void OnCollected(Entity _entity)
     {
-        ((MoveableEntity)_entity).CurrentHealth += healthAmount;
+        ((MoveableEntity)_entity).AddHealth(healthAmount);
     }
 }

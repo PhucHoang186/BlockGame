@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17440322, g: 0.21811871, b: 0.30035114, a: 1}
+  m_IndirectSpecularColor: {r: 0.17440267, g: 0.21811816, b: 0.30035034, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -722,6 +722,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5268270754287603053, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8073306729917259915, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8073306729917259915, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8073306729917259915, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3123,8 +3135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd401bd1776e1cf41899ad2bd1bb0861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthImg: {fileID: 400783968624567280, guid: c0ff76b9b7f997b4b85fdf4c39084add, type: 3}
-  healthContainer: {fileID: 437291323}
+  slider: {fileID: 0}
 --- !u!1 &510916294
 GameObject:
   m_ObjectHideFlags: 0
@@ -5383,7 +5394,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 0}
+  m_BackGroundColor: {r: 0.4762816, g: 0.68893987, b: 0.7264151, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -8763,6 +8774,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3162888111684930502, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3162888111684930502, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3162888111684930502, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377111, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -8817,6 +8840,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5268270754287603053, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7815953738137399650, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7815953738137399650, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7815953738137399650, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

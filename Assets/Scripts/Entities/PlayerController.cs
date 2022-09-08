@@ -8,41 +8,22 @@ public class PlayerController : MoveableEntity
     public static Action<List<Node>, GameState> ON_SELECT_PATH;
     public static PlayerController Instance;
     private List<Node> inRangeNodes = new List<Node>();
-    public override int CurrentHealth
-    {
-        get { return currentHealth; }
-        set
-        {
-            currentHealth = value;
-            GameEvents.ON_HEALTH_CHANGED?.Invoke(value);
-        }
-    }
+
     void Awake()
     {
         if (Instance == null)
             Instance = this;
     }
 
-    void Start()
+    public override void Start()
     {
-        ani = GetComponent<Animator>();
+        base.Start();
         ON_SELECT_PATH += MoveToPath;
-        canAttack = true;
-        CurrentHealth = maxHealth;
     }
 
     void OnDestroy()
     {
         ON_SELECT_PATH -= MoveToPath;
-    }
-
-    void Update()
-    {
-        if (!canMove || !canAttack)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.X))
-            AttacK(GameState.EnemyTurn);
     }
 
     public void HandlePlayerTurn()
@@ -97,11 +78,5 @@ public class PlayerController : MoveableEntity
         }
 
         base.MoveToPath(_path, _newState);
-    }
-
-
-    public override void AttacK(GameState _newState)
-    {
-        base.AttacK(_newState);
     }
 }

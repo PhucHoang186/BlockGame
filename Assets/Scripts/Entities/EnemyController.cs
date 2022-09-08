@@ -15,13 +15,11 @@ public class EnemyController : MoveableEntity
             Instance = this;
     }
 
-    void Start()
+    public override void Start()
     {
-        ani = GetComponent<Animator>();
+        base.Start();
         var playerObj = GameObject.FindGameObjectWithTag("Player");
         playerTarget = playerObj.GetComponent<PlayerController>();
-        canAttack = true;
-        CurrentHealth = maxHealth;
     }
 
 

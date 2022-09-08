@@ -7,24 +7,34 @@ using DG.Tweening;
 public class MoveableEntity : Entity, IDamageable
 {
     public static Action ON_FINISH_MOVEMENT;
-    [SerializeField] protected float moveTime;
-    [SerializeField] protected float rotateTime;
+    public float moveTime;
+    public float rotateTime;
     public int moveRange = 2;
     public bool canMove;
     public bool canAttack;
     public int damageAmount = 0;
+    [Space(5)]
     public int maxHealth = 10;
-    protected int currentHealth;
-    public virtual int CurrentHealth
+    public int currentHealth;
+    public int CurrentHealth
     {
         get { return currentHealth; }
         set
         {
             currentHealth = value;
+            healthDisplay.UpdateHealthUI(value);
         }
     }
 
+    public virtual void Start()
+    {
+        ani = GetComponent<Animator>();
+        canAttack = true;
+        currentHealth = maxHealth;
+        healthDisplay.SetMaxHealth(maxHealth);
+    }
 
+    public HealthDisplay healthDisplay;
 
     #region  Movement
     public virtual void MoveToPath(List<Node> _path, GameState _newState)
@@ -94,7 +104,6 @@ public class MoveableEntity : Entity, IDamageable
         canAttack = false;
         SetTriggerAnimation(Attack);
 
-        yield return new WaitForSeconds(ani.GetCurrentAnimatorClipInfo(0).Length);
 
         var damageable = _entity.GetComponent<IDamageable>();
         if (damageable != null)
@@ -102,8 +111,9 @@ public class MoveableEntity : Entity, IDamageable
 
         canAttack = true;
         canMove = false;
+        yield return new WaitForSeconds(ani.GetCurrentAnimatorClipInfo(0).Length);
+        
         GameManager.Instance.SwitchState(_newState);
-
     }
     #endregion
 
@@ -112,7 +122,7 @@ public class MoveableEntity : Entity, IDamageable
     public virtual void AddHealth(int _healthAmount)
     {
         CurrentHealth += _healthAmount;
-        if (currentHealth > maxHealth) CurrentHealth = maxHealth;
+        if (CurrentHealth > maxHealth) CurrentHealth = maxHealth;
     }
 
     public virtual void MinusHealth(int _healthAmount)

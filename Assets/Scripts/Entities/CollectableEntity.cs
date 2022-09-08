@@ -13,6 +13,6 @@ public class CollectableEntity : Entity
 
     public virtual void OnCollected(Entity _entity)
     {
-
+        
     }
 }

@@ -92,13 +92,13 @@ public class Node : MonoBehaviour
 
     void OnMouseEnter()
     {
-        ToggleHover(true);
+        // ToggleHover(true);
     }
 
     void OnMouseExit()
     {
-        ToggleHover(false);
-        ToggleAttack(false);
+        // ToggleHover(false);
+        // ToggleAttack(false);
     }
 
 

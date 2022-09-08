@@ -20,7 +20,6 @@ public class GridManager : MonoBehaviour
     public void Init()
     {
         grids = gridGenerator.GridInit(grids, nodeSize);
-        VisualGrid.Instance.Init();
         GameManager.Instance.SwitchState(GameState.PlayerTurn);
     }
 
@@ -44,16 +43,17 @@ public class GridManager : MonoBehaviour
 
     public Node GetNodeByPosition(Vector3 _pos)
     {
-        float x = _pos.x / nodeSize;
-        float y = _pos.y / nodeSize - 1;
-        float z = _pos.z / nodeSize;
+        float x = Mathf.Ceil(_pos.x / nodeSize);
+        float z = Mathf.Ceil(_pos.z / nodeSize);
 
-        if (grids.ContainsKey(_pos / nodeSize))
+        var nodeId = new Vector3(x, 0f, z);
+        if (grids.ContainsKey(nodeId))
         {
-            return grids[_pos / nodeSize];
+            return grids[nodeId];
         }
         else
         {
+            Debug.LogError("false");
             return null;
         }
     }
@@ -117,7 +117,7 @@ public class GridManager : MonoBehaviour
                 int y = _node.y + j;
                 if (x >= 0 && x < gridGenerator.weight && y >= 0 && y < gridGenerator.height)
                 {
-                    if(grids[new Vector3(x, 0f, y)].currentObjectPlaced?.GetComponent<Entity>())
+                    if (grids[new Vector3(x, 0f, y)].currentObjectPlaced?.GetComponent<Entity>())
                         neighborNodes.Add(grids[new Vector3(x, 0f, y)]);
                 }
             }

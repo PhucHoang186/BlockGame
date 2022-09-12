@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7939009371924146623}
   - component: {fileID: 3549041865598271376}
   m_Layer: 0
-  m_Name: HoverSprite
+  m_Name: HighLightSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,8 +142,8 @@ MonoBehaviour:
   isPlaced: 0
   canMove: 0
   checkPoint: {fileID: 8378505040074760547}
-  highlightSprite: {fileID: 298564663371278268}
-  hoverSprite: {fileID: 3549041865598271376}
+  moveSprite: {fileID: 298564663371278268}
+  highlightSprite: {fileID: 3549041865598271376}
   attackSprite: {fileID: 3434209074291863218}
   entityLayer:
     serializedVersion: 2
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 4942739137518784812}
   - component: {fileID: 298564663371278268}
   m_Layer: 0
-  m_Name: HighlightSprite
+  m_Name: MoveSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

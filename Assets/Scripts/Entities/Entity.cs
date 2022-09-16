@@ -6,7 +6,7 @@ using DG.Tweening;
 using System.Linq;
 public enum EntityType
 {
-    Player, Enemy, Decoration, Collectable
+    Null, Player, Enemy, Decoration, Collectable,
 }
 public class Entity : MonoBehaviour
 {

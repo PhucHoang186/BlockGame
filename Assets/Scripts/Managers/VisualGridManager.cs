@@ -27,6 +27,7 @@ public class VisualGridManager : MonoSingleton<VisualGridManager>
     void Update()
     {
         ToggleMousePosition();
+        SelectedPlayer();
         // HandleVisualType();
     }
 
@@ -49,35 +50,14 @@ public class VisualGridManager : MonoSingleton<VisualGridManager>
     private void ToggleMoveableNode(Node _startNode, int _moveRange)
     {
         inRangeNodes.Clear();
-        List<Node> previousStepNodes = new List<Node>();
-        inRangeNodes.Add(_startNode);
-        previousStepNodes.Add(_startNode);
-        int step = 0;
-        while (step < _moveRange)
-        {
-            var neighborNodes = new List<Node>();
-            foreach (Node node in previousStepNodes)
-            {
-                neighborNodes.AddRange(GridManager.Instance.GetNeighborNode(node));
-            }
-            inRangeNodes.AddRange(neighborNodes);
-            previousStepNodes = neighborNodes;
-            step++;
-        }
+        inRangeNodes = gridManager.GetNodesInRange(_startNode, _moveRange);
         foreach (Node node in inRangeNodes)
         {
             var path = PathFinding.Instance.FindPath(_startNode, node);
             if (path?.Count > 0 && path?.Count <= _moveRange)
             {
-                if (node.currentObjectPlaced != null && node.currentObjectPlaced.GetComponent<MoveableEntity>())
-                {
-                    node.ToggleAttack(true);
-                }
-                else
-                {
-                    node.ToggleHighlight(true);
-                    node.canMove = true;
-                }
+                node.ToggleHighlight(true);
+                node.canMove = true;
             }
         }
     }
@@ -109,7 +89,16 @@ public class VisualGridManager : MonoSingleton<VisualGridManager>
 
     public void SwitchVisualType(VisualGridType _newType)
     {
-        if(currentGridType == _newType) return;
+        if (currentGridType == _newType) return;
         currentGridType = _newType;
+    }
+
+    public void SelectedPlayer()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (currentNodeOn != null && !currentNodeOn.IsFreeNode() && currentNodeOn.GetEntityType() == EntityType.Player)
+                currentNodeOn.ToggleSelect(true);
+        }
     }
 }

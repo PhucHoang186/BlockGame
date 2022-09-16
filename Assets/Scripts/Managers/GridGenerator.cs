@@ -11,7 +11,7 @@ public class GridGenerator : MonoBehaviour
     public LayerMask BlockLayer;
     public LayerMask EntityLayer;
 
-    public Dictionary<Vector3, Node> GridInit(Dictionary<Vector3, Node> _grids, float _nodeSize)
+    public Dictionary<Vector3, Node> Init(Dictionary<Vector3, Node> _grids, float _nodeSize)
     {
         _grids = new Dictionary<Vector3, Node>();
         GenerateGrid(height, weight, _grids, _nodeSize);

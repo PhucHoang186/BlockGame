@@ -50,6 +50,7 @@ public class PlayerController : MoveableEntity
             previousStepNodes = neighborNodes;
             step++;
         }
+
         foreach (Node node in inRangeNodes)
         {
             var path = PathFinding.Instance.FindPath(currentNodePlaced, node);

@@ -19,7 +19,8 @@ public class GridManager : MonoBehaviour
     }
     public void Init()
     {
-        grids = gridGenerator.GridInit(grids, nodeSize);
+        grids = gridGenerator.Init(grids, nodeSize);
+        BattleSystem.Instance.Init();
         GameManager.Instance.SwitchState(GameState.PlayerTurn);
     }
 

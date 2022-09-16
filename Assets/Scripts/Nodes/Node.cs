@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Node : MonoBehaviour
 {
     [HideInInspector] public float gCost;
@@ -23,12 +22,13 @@ public class Node : MonoBehaviour
     public Entity currentObjectPlaced;
     public bool isPlaced;
     public bool canMove;
+    [SerializeField] private LayerMask entityLayer;
+    [SerializeField] private LayerMask nodeLayer;
     [SerializeField] Transform checkPoint;
     [SerializeField] SpriteRenderer moveSprite;
     [SerializeField] SpriteRenderer highlightSprite;
     [SerializeField] SpriteRenderer attackSprite;
-    [SerializeField] private LayerMask entityLayer;
-    [SerializeField] private LayerMask nodeLayer;
+    [SerializeField] SpriteRenderer selectedSprite;
 
     public void Init()
     {
@@ -50,9 +50,17 @@ public class Node : MonoBehaviour
         }
     }
 
+    public EntityType GetEntityType()
+    {
+        if (currentObjectPlaced != null)
+            return currentObjectPlaced.entityType;
+            
+        return EntityType.Null;
+    }
+
     public bool IsMoveableNode()
     {
-        return currentObjectPlaced.entityType == EntityType.Player || currentObjectPlaced.entityType == EntityType.Collectable; 
+        return currentObjectPlaced.entityType == EntityType.Player || currentObjectPlaced.entityType == EntityType.Collectable;
     }
 
     public void PlaceObjectOnNode(Entity _entity)
@@ -66,6 +74,11 @@ public class Node : MonoBehaviour
         {
             isPlaced = true;
         }
+    }
+
+    public bool IsFreeNode()
+    {
+        return currentObjectPlaced == null;
     }
 
     public void ReleaseNode()
@@ -89,18 +102,10 @@ public class Node : MonoBehaviour
         attackSprite.gameObject.SetActive(_isActive);
     }
 
-    void OnMouseEnter()
+    public void ToggleSelect(bool _isActive)
     {
-        // ToggleHover(true);
+        selectedSprite.gameObject.SetActive(_isActive);
     }
-
-    void OnMouseExit()
-    {
-        // ToggleHover(false);
-        // ToggleAttack(false);
-    }
-
-
 
     void OnMouseOver()
     {

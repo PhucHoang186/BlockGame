@@ -54,8 +54,13 @@ public class Node : MonoBehaviour
     {
         if (currentObjectPlaced != null)
             return currentObjectPlaced.entityType;
-            
+
         return EntityType.Null;
+    }
+    
+    public Entity GetEntity()
+    {
+        return currentObjectPlaced;
     }
 
     public bool IsMoveableNode()
@@ -86,7 +91,29 @@ public class Node : MonoBehaviour
         currentObjectPlaced = null;
         isPlaced = false;
     }
-    public void ToggleHighlight(bool _isActive)
+
+    public void ToggleNodeByType(bool _isActive, VisualGridType _type)
+    {
+        switch (_type)
+        {
+            case VisualGridType.Movement:
+                ToggleMovement(_isActive);
+                break;
+            case VisualGridType.Attack:
+                ToggleAttack(_isActive);
+                break;
+            case VisualGridType.All:
+                ToggleHover(_isActive);
+                ToggleMovement(_isActive);
+                ToggleAttack(_isActive);
+                
+                break; 
+            default:
+                break;
+        }
+    }
+
+    public void ToggleMovement(bool _isActive)
     {
         moveSprite.gameObject.SetActive(_isActive);
     }
@@ -105,21 +132,5 @@ public class Node : MonoBehaviour
     public void ToggleSelect(bool _isActive)
     {
         selectedSprite.gameObject.SetActive(_isActive);
-    }
-
-    void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (canMove)
-            {
-                PathFinding.Instance.FindPath(PlayerController.Instance.currentNodePlaced, this);
-                PlayerController.ON_SELECT_PATH?.Invoke(GridManager.Instance.path, GameState.EnemyTurn);
-            }
-            else if (currentObjectPlaced != null && currentObjectPlaced.entityType != EntityType.Player && currentObjectPlaced.GetComponent<MoveableEntity>())
-            {
-                PlayerController.Instance.AttacK(GameState.EnemyTurn);
-            }
-        }
     }
 }

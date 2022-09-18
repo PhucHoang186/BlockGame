@@ -11,17 +11,38 @@ public class GridManager : MonoBehaviour
     // [SerializeField] List<EntityObject> entityObjects;
     public List<Node> path;
     public Dictionary<Vector3, Node> GetGrid => grids;
+    private Node currentNodeOn;
+    private Camera cam;
+
+    public Node CurrentNodeOn => currentNodeOn;
+    
     // Init player, object position
     void Awake()
     {
         if (Instance == null)
             Instance = this;
     }
+
     public void Init()
     {
         grids = gridGenerator.Init(grids, nodeSize);
         BattleSystem.Instance.Init();
         GameManager.Instance.SwitchState(GameState.PlayerTurn);
+        cam = Camera.main;
+    }
+
+    void Update()
+    {
+        GetCurrentNodeOn();
+    }
+
+    private void GetCurrentNodeOn()
+    {
+        var ray = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            currentNodeOn = GetNodeByPosition(hit.transform.position);
+        }
     }
 
     public void MoveToNode(Node _currentNode, Node _newNode, Entity _entity)

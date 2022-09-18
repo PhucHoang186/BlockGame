@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
 
     private void HandlePlayerTurn()
     {
-        PlayerController.Instance.HandlePlayerTurn();
     }
 
     private void HandleEnemyTurn()

@@ -1,104 +1,137 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum VisualGridType
 {
     Movement,
-    Highlight,
+    Hover,
     Attack,
+    Waiting,
+    All,
 }
 
 public class VisualGridManager : MonoSingleton<VisualGridManager>
 {
+
     [SerializeField] VisualGridType currentGridType;
     private Camera cam;
     private GridManager gridManager;
     private Node currentNodeOn;
     private Node previousNodeOn;
     public List<Node> inRangeNodes = new List<Node>();
+    private bool isAttackState;
+
     void Start()
     {
         cam = Camera.main;
         gridManager = GridManager.Instance;
+        GameEvents.ON_CHANGE_STATE += SwitchVisualType;
         currentNodeOn = null;
+        GameEvents.ON_CHANGE_STATE?.Invoke(VisualGridType.Movement);
+    }
+
+    void OnDestroy()
+    {
+        GameEvents.ON_CHANGE_STATE -= SwitchVisualType;
     }
 
     void Update()
     {
-        ToggleMousePosition();
-        SelectedPlayer();
-        // HandleVisualType();
-    }
-
-    public void ToggleMousePosition()
-    {
-        var ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        GetCurrentNodeOn();
+        if (currentNodeOn != null)
         {
-            currentNodeOn = gridManager.GetNodeByPosition(hit.transform.position);
-            currentNodeOn.ToggleHover(true);
-            if (previousNodeOn != currentNodeOn)
-            {
-                previousNodeOn?.ToggleHover(false);
-            }
+            ToggleMousePosition();
+            HandleVisualAttackState();
             previousNodeOn = currentNodeOn;
         }
     }
 
-
-    private void ToggleMoveableNode(Node _startNode, int _moveRange)
+    private void HandleVisualAttackState()
     {
-        inRangeNodes.Clear();
-        inRangeNodes = gridManager.GetNodesInRange(_startNode, _moveRange);
-        foreach (Node node in inRangeNodes)
+        if (isAttackState)
         {
-            var path = PathFinding.Instance.FindPath(_startNode, node);
-            if (path?.Count > 0 && path?.Count <= _moveRange)
+            if (previousNodeOn != currentNodeOn)
             {
-                node.ToggleHighlight(true);
-                node.canMove = true;
+                ReleaseVisual();
+            }
+            else
+            {
+                ToggleNodes(currentNodeOn, BattleSystem.Instance.currentSelectedPlayer.attackRange, VisualGridType.Attack, false);
             }
         }
     }
 
-    // public void HandleVisualType()
-    // {
-    //     switch (currentGridType)
-    //     {
-    //         case VisualGridType.Movement:
-    //             if (Input.GetMouseButtonDown(0))
-    //             {
-    //                 if (currentNodeOn.canMove && currentNodeOn != null)
-    //                 {
-    //                     PathFinding.Instance.FindPath(PlayerController.Instance.currentNodePlaced, currentNodeOn);
-    //                     PlayerController.ON_SELECT_PATH?.Invoke(GridManager.Instance.path, GameState.EnemyTurn);
-    //                     SwitchVisualType(VisualGridType.Highlight);
-    //                 }
-    //             }
-    //             ToggleMoveableNode(PlayerController.Instance.currentNodePlaced, PlayerController.Instance.moveRange);
-    //             break;
-    //         case VisualGridType.Highlight:
-    //             break;
-    //         case VisualGridType.Attack:
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
+    private void GetCurrentNodeOn()
+    {
+        currentNodeOn = gridManager.CurrentNodeOn;
+    }
+
+    public void ToggleMousePosition()
+    {
+        currentNodeOn.ToggleHover(true);
+        if (previousNodeOn != currentNodeOn)
+        {
+            previousNodeOn?.ToggleHover(false);
+        }
+    }
+
+
+
+    private void ToggleNodes(Node _startNode, int _range, VisualGridType _type, bool _isUsePath = true)
+    {
+        inRangeNodes = gridManager.GetNodesInRange(_startNode, _range);
+        foreach (Node node in inRangeNodes)
+        {
+            if (_isUsePath)
+            {
+                var path = PathFinding.Instance.FindPath(_startNode, node);
+                if (path?.Count > 0 && path?.Count <= _range)
+                {
+                    node.ToggleNodeByType(true, _type);
+                    if (_type == VisualGridType.Movement)
+                    {
+                        node.canMove = true;
+                    }
+                }
+            }
+            else
+            {
+                node.ToggleNodeByType(true, _type);
+            }
+        }
+    }
+
+    public void ReleaseVisual()
+    {
+        foreach (Node node in inRangeNodes)
+        {
+            node.ToggleNodeByType(false, VisualGridType.All);
+        }
+        inRangeNodes.Clear();
+
+    }
 
     public void SwitchVisualType(VisualGridType _newType)
     {
-        if (currentGridType == _newType) return;
+        ReleaseVisual();
         currentGridType = _newType;
-    }
-
-    public void SelectedPlayer()
-    {
-        if (Input.GetMouseButtonDown(0))
+        isAttackState = _newType == VisualGridType.Attack;
+        switch (currentGridType)
         {
-            if (currentNodeOn != null && !currentNodeOn.IsFreeNode() && currentNodeOn.GetEntityType() == EntityType.Player)
-                currentNodeOn.ToggleSelect(true);
+            case VisualGridType.Movement:
+                ToggleNodes(BattleSystem.Instance.currentSelectedPlayer.currentNodePlaced, BattleSystem.Instance.currentSelectedPlayer.moveRange, VisualGridType.Movement);
+                break;
+            case VisualGridType.Attack:
+                break;
+            case VisualGridType.Waiting:
+                break;
+            case VisualGridType.All:
+                break;
+            default:
+                break;
         }
     }
+    
 }

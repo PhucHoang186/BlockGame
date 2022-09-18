@@ -31,22 +31,68 @@ public class BattleSystem : MonoSingleton<BattleSystem>
                 enemiesList.Add((MoveableEntity)pairs.Value.currentObjectPlaced);
             }
         }
+        SetCurrentPlayer((PlayerController)playersList[0]);
     }
 
     void Update()
     {
         HandleBattleState();
+        SelectedPlayer();
     }
 
     private void HandleBattleState()
     {
         if (currentBattleState == BattleState.PlayerTurn)
         {
-
+            HandlePlayerTurn();
         }
         else if (currentBattleState == BattleState.EnemyTurn)
         {
 
+        }
+    }
+
+    private void HandlePlayerTurn()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Node currentNodeOn = GridManager.Instance.CurrentNodeOn;
+            if (currentNodeOn == null) return;
+            if (currentNodeOn.canMove)
+            {
+                PathFinding.Instance.FindPath(currentSelectedPlayer.currentNodePlaced, currentNodeOn);
+                PlayerController.ON_SELECT_PATH?.Invoke(GridManager.Instance.path, GameState.EnemyTurn);
+                GameEvents.ON_CHANGE_STATE?.Invoke(VisualGridType.Waiting);
+            }
+            else if (currentNodeOn.GetEntity() != null && currentNodeOn.GetEntityType() != EntityType.Player && currentNodeOn.GetEntity().GetComponent<MoveableEntity>())
+            {
+                currentSelectedPlayer.AttacK(GameState.EnemyTurn);
+            }
+        }
+    }
+
+    public void SelectedPlayer()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Node currentNodeOn = GridManager.Instance.CurrentNodeOn;
+            if (currentNodeOn != null && !currentNodeOn.IsFreeNode() && currentNodeOn.GetEntityType() == EntityType.Player)
+            {
+                SetCurrentPlayer((PlayerController)currentNodeOn.GetEntity());
+            }
+        }
+    }
+
+    private void SetCurrentPlayer(PlayerController _player)
+    {
+        currentSelectedPlayer = _player;
+        GameEvents.ON_CHANGE_STATE?.Invoke(VisualGridType.Movement);
+        foreach (PlayerController player in playersList)
+        {
+            if (player == currentSelectedPlayer)
+                player.canMove = true;
+            else
+                player.canMove = false;
         }
     }
 }

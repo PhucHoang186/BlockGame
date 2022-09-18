@@ -9,7 +9,8 @@ public class MoveableEntity : Entity, IDamageable
     public static Action ON_FINISH_MOVEMENT;
     public float moveTime;
     public float rotateTime;
-    public int moveRange = 2;
+    public int moveRange;
+    public int attackRange;
     public bool canMove;
     public bool canAttack;
     public int damageAmount = 0;
@@ -39,18 +40,20 @@ public class MoveableEntity : Entity, IDamageable
     #region  Movement
     public virtual void MoveToPath(List<Node> _path, GameState _newState)
     {
-        StartCoroutine(MoveToPathCroutine(_path, _newState));
+        if(canMove)
+            StartCoroutine(MoveToPathCroutine(_path, _newState));
     }
 
     public virtual IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
     {
         int moveStep = 0;
+        int maxMoveStep = _path.Count;
         SetTriggerAnimation(Run);
 
-        while (moveStep < moveRange)
+        while (moveStep < maxMoveStep && maxMoveStep <= moveRange)
         {
             moveStep += 1;
-
+            
             MoveToNode(_path.FirstOrDefault());
             if (_path.Count > 0)
                 _path.RemoveAt(0);

@@ -35,20 +35,10 @@ public class EnemyController : MoveableEntity
         }
     }
 
-    public override void AttacK(GameState _newState)
-    {
-        base.AttacK(_newState);
-    }
-
-    private bool DetectTarget()
-    {
-        return false;
-    }
-
     public override IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
     {
-         int moveStep = 0;
-        SetTriggerAnimation(Run);        
+        int moveStep = 0;
+        SetTriggerAnimation(Run);
 
         while (moveStep < moveRange)
         {
@@ -63,10 +53,5 @@ public class EnemyController : MoveableEntity
         canMove = false;
         GameManager.Instance.SwitchState(_newState);
         SetTriggerAnimation(Idle);
-    }
-
-    public override void MoveToNode(Node _newNode)
-    {
-        base.MoveToNode(_newNode);
     }
 }

@@ -48,6 +48,11 @@ public class VisualGridManager : MonoSingleton<VisualGridManager>
         }
     }
 
+    public VisualGridType GetCurrentType()
+    {
+        return currentGridType;
+    }
+
     private void HandleVisualAttackState()
     {
         if (isAttackState)

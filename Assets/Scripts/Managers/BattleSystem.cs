@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum BattleState
 {
@@ -54,7 +55,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
 
     private void HandlePlayerTurn()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             Node currentNodeOn = GridManager.Instance.CurrentNodeOn;
             if (currentNodeOn == null) return;

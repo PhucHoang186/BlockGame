@@ -147,6 +147,16 @@ public class GridManager : MonoBehaviour
         return neighborNodes;
     }
 
+    public List<Node> GetGridList()
+    {
+        List<Node> nodeList = new List<Node>();
+        foreach( var pair in grids)
+        {
+            nodeList.Add(pair.Value);
+        }
+        return nodeList;
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

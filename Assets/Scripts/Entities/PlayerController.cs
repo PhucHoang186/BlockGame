@@ -7,6 +7,9 @@ using System.Linq;
 public class PlayerController : MoveableEntity
 {
     public static Action<List<Node>, GameState> ON_SELECT_PATH;
+    public static Action<List<Node>> ON_ATTACK;
+
+    public int weaponRange;
 
     public override void Start()
     {
@@ -22,7 +25,6 @@ public class PlayerController : MoveableEntity
     public override IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
     {
         yield return base.MoveToPathCroutine(_path, _newState);
-        GameEvents.ON_CHANGE_STATE?.Invoke(VisualGridType.Movement);
+        // GameEvents.ON_CHANGE_PLAYER_STATE?.Invoke(PlayerState.Movement);
     }
-
 }

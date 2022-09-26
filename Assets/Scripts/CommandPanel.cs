@@ -1,6 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum CommandType
+{
+    Movement, 
+    Attack,
+    End,
+}
+
 public class CommandPanel : MonoBehaviour
 {
     [SerializeField] Button moveButton;
@@ -23,12 +30,12 @@ public class CommandPanel : MonoBehaviour
 
     public void OnMoveButtonPressed()
     {
-        GameEvents.ON_CHANGE_STATE?.Invoke(VisualGridType.Movement);
+        GameEvents.ON_CHANGE_PLAYER_STATE?.Invoke(PlayerState.Movement);
     }
 
     public void OnAttackButtonPressed()
     {
-        GameEvents.ON_CHANGE_STATE?.Invoke(VisualGridType.Attack);
+        GameEvents.ON_CHANGE_PLAYER_STATE?.Invoke(PlayerState.Attack);
     }
 
     public void OnEndTurnButtonPressed()

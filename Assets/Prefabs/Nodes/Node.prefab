@@ -141,7 +141,7 @@ MonoBehaviour:
   y: 0
   currentObjectPlaced: {fileID: 0}
   isPlaced: 0
-  canMove: 0
+  canInteract: 0
   entityLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -152,7 +152,7 @@ MonoBehaviour:
   moveSprite: {fileID: 298564663371278268}
   highlightSprite: {fileID: 3549041865598271376}
   attackSprite: {fileID: 3434209074291863218}
-  selectedSprite: {fileID: 6129179872483215383}
+  weaponRangeSprite: {fileID: 6129179872483215383}
 --- !u!65 &1055586312833634772
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -355,7 +355,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 1, g: 0.18250228, b: 0.0990566, a: 0.47058824}
+  m_Color: {r: 0, g: 0.8339977, b: 1, a: 0.5882353}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -376,7 +376,7 @@ GameObject:
   - component: {fileID: 4154468358021429017}
   - component: {fileID: 6129179872483215383}
   m_Layer: 0
-  m_Name: SelectSprite
+  m_Name: WeaponRangeSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -439,7 +439,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0.42205977, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 0.18431373, b: 0.09803922, a: 0.5882353}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

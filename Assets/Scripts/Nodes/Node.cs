@@ -1,6 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum VisualNodeType
+{
+    Movement,
+    Hover,
+    Attack,
+    WeaponRange,
+    All,
+}
+
 public class Node : MonoBehaviour
 {
     [HideInInspector] public float gCost;
@@ -21,14 +31,14 @@ public class Node : MonoBehaviour
     [Header("Properties")]
     public Entity currentObjectPlaced;
     public bool isPlaced;
-    public bool canMove;
+    public bool canInteract;
     [SerializeField] private LayerMask entityLayer;
     [SerializeField] private LayerMask nodeLayer;
     [SerializeField] Transform checkPoint;
     [SerializeField] SpriteRenderer moveSprite;
     [SerializeField] SpriteRenderer highlightSprite;
     [SerializeField] SpriteRenderer attackSprite;
-    [SerializeField] SpriteRenderer selectedSprite;
+    [SerializeField] SpriteRenderer weaponRangeSprite;
 
     public void Init()
     {
@@ -92,21 +102,25 @@ public class Node : MonoBehaviour
         isPlaced = false;
     }
 
-    public void ToggleNodeByType(bool _isActive, VisualGridType _type)
+    public void ToggleNodeByType(bool _isActive, VisualNodeType _type)
     {
         switch (_type)
         {
-            case VisualGridType.Movement:
+            case VisualNodeType.Movement:
                 ToggleMovement(_isActive);
                 break;
-            case VisualGridType.Attack:
+            case VisualNodeType.Attack:
                 ToggleAttack(_isActive);
                 break;
-            case VisualGridType.All:
+            case VisualNodeType.WeaponRange:
+                ToggleWeaponRange(_isActive);
+                break;
+            case VisualNodeType.All:
                 ToggleHover(_isActive);
                 ToggleMovement(_isActive);
                 ToggleAttack(_isActive);
-                
+                ToggleWeaponRange(_isActive);
+
                 break; 
             default:
                 break;
@@ -129,8 +143,8 @@ public class Node : MonoBehaviour
         attackSprite.gameObject.SetActive(_isActive);
     }
 
-    public void ToggleSelect(bool _isActive)
+    public void ToggleWeaponRange(bool _isActive)
     {
-        selectedSprite.gameObject.SetActive(_isActive);
+        weaponRangeSprite.gameObject.SetActive(_isActive);
     }
 }

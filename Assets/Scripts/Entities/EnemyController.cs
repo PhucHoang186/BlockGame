@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System.Linq;
+using System;
 
 public class EnemyController : MoveableEntity
 {
+    public static Action <List<Node>, Action> ON_ENEMY_TURN;
     public static EnemyController Instance;
     public PlayerController playerTarget;
     // private trans
@@ -20,22 +22,15 @@ public class EnemyController : MoveableEntity
         base.Start();
         var playerObj = GameObject.FindGameObjectWithTag("Player");
         playerTarget = playerObj.GetComponent<PlayerController>();
+        ON_ENEMY_TURN += MoveToPath;
     }
 
-
-    public void HandleEnemyTurn()
+    void OnDestroy()
     {
-        canMove = true;
-        PathFinding.Instance.FindPath(this.currentNodePlaced, playerTarget.currentNodePlaced);
-        if (GridManager.Instance.path.Count > 1)
-            MoveToPath(GridManager.Instance.path, GameState.PlayerTurn);
-        else
-        {
-            AttacK(GameState.PlayerTurn);
-        }
+        ON_ENEMY_TURN -= MoveToPath;
     }
 
-    public override IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
+    public override IEnumerator MoveToPathCroutine(List<Node> _path, Action cb)
     {
         int moveStep = 0;
         SetTriggerAnimation(Run);
@@ -47,11 +42,11 @@ public class EnemyController : MoveableEntity
             MoveToNode(_path.FirstOrDefault());
             if (_path.Count > 0)
                 _path.RemoveAt(0);
-            AttacK(_newState);
+            // AttacK(_newState);
             yield return new WaitForSeconds(moveTime);
         }
         canMove = false;
-        GameManager.Instance.SwitchState(_newState);
         SetTriggerAnimation(Idle);
+        cb?.Invoke();
     }
 }

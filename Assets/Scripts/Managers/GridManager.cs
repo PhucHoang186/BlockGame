@@ -27,7 +27,6 @@ public class GridManager : MonoBehaviour
     {
         grids = gridGenerator.Init(grids, nodeSize);
         BattleSystem.Instance.Init();
-        GameManager.Instance.SwitchState(GameState.PlayerTurn);
         cam = Camera.main;
     }
 
@@ -149,11 +148,12 @@ public class GridManager : MonoBehaviour
 
     public List<Node> GetGridList()
     {
-        List<Node> nodeList = new List<Node>();
-        foreach( var pair in grids)
-        {
-            nodeList.Add(pair.Value);
-        }
+        // List<Node> nodeList = new List<Node>();
+        // foreach( var pair in grids)
+        // {
+        //     nodeList.Add(pair.Value);
+        // }
+        List<Node> nodeList = grids.Values.ToList();
         return nodeList;
     }
 

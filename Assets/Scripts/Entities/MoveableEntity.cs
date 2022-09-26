@@ -38,13 +38,13 @@ public class MoveableEntity : Entity, IDamageable
     public HealthDisplay healthDisplay;
 
     #region  Movement
-    public virtual void MoveToPath(List<Node> _path, GameState _newState)
+    public virtual void MoveToPath(List<Node> _path, Action cb = null)
     {
         if(canMove)
-            StartCoroutine(MoveToPathCroutine(_path, _newState));
+            StartCoroutine(MoveToPathCroutine(_path, cb));
     }
 
-    public virtual IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
+    public virtual IEnumerator MoveToPathCroutine(List<Node> _path, Action cb = null)
     {
         int moveStep = 0;
         int maxMoveStep = _path.Count;
@@ -60,8 +60,8 @@ public class MoveableEntity : Entity, IDamageable
             yield return new WaitForSeconds(moveTime);
         }
         canMove = false;
-        GameManager.Instance.SwitchState(_newState);
         SetTriggerAnimation(Idle);
+        cb?.Invoke();
     }
 
     public virtual void MoveToNode(Node _newNode)

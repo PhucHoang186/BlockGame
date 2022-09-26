@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public enum BattleState
 {
     PlayerTurn,
     EnemyTurn,
+    Waiting,
 }
 
 public enum PlayerState
@@ -25,6 +27,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     private List<Node> nodesInAttackRangeList;
     private BattleState currentBattleState;
     private PlayerState currentPlayerState;
+    private Node previousNodeOn;
 
     void Awake()
     {
@@ -72,8 +75,15 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         }
         else if (currentBattleState == BattleState.EnemyTurn)
         {
-
+            HandleEnemyTurn();
         }
+    }
+
+    private void HandleEnemyTurn()
+    {
+        SetBattleState(BattleState.Waiting);
+        EnemyController.Instance.canMove = true;
+        EnemyController.ON_ENEMY_TURN?.Invoke(PathFinding.Instance.FindPath(EnemyController.Instance.currentNodePlaced, EnemyController.Instance.playerTarget.currentNodePlaced), () => SetBattleState(BattleState.PlayerTurn));
     }
 
     private void HandlePlayerTurn()
@@ -81,6 +91,9 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         SelectedPlayer();
 
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+
+        if (currentPlayerState == PlayerState.Attack)
+            HandlePlayerWeaponRange();
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -90,8 +103,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
             {
                 if (currentPlayerState == PlayerState.Movement)
                 {
-                    PathFinding.Instance.FindPath(currentSelectedPlayer.currentNodePlaced, currentNodeOn);
-                    PlayerController.ON_SELECT_PATH?.Invoke(gridManager.path, GameState.EnemyTurn);
+                    PlayerController.ON_SELECT_PATH?.Invoke(PathFinding.Instance.FindPath(currentSelectedPlayer.currentNodePlaced, currentNodeOn), () => SetBattleState(BattleState.EnemyTurn));
                 }
                 else if (currentPlayerState == PlayerState.Attack)
                 {
@@ -115,7 +127,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         if (Input.GetMouseButtonDown(0))
         {
             Node currentNodeOn = gridManager.CurrentNodeOn;
-            if (currentNodeOn != null && !currentNodeOn.IsFreeNode() && currentNodeOn.GetEntityType() == EntityType.Player)
+            if (currentNodeOn != null && !currentNodeOn.IsFreeNode() && currentNodeOn.IsPlayerNode())
             {
                 SetCurrentPlayer((PlayerController)currentNodeOn.GetEntity());
             }
@@ -137,6 +149,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
 
     public void SwitchPlayerState(PlayerState _state)
     {
+        VisualGridManager.Instance.ReleaseVisual();
         currentPlayerState = _state;
         switch (_state)
         {
@@ -160,7 +173,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
 
         List<Node> movementNodeList = new List<Node>();
         movementNodeList = gridManager.GetNodesInRange(startNode, range);
-        
+
         foreach (Node node in movementNodeList)
         {
             var path = PathFinding.Instance.FindPath(startNode, node);
@@ -175,24 +188,38 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     void HandlePlayerAttack()
     {
         Node startNode = currentSelectedPlayer.currentNodePlaced;
-        int range = currentSelectedPlayer.moveRange;
+        int range = currentSelectedPlayer.attackRange;
 
         List<Node> attackNodeList = new List<Node>();
         attackNodeList = gridManager.GetNodesInRange(startNode, range);
         foreach (Node node in attackNodeList)
         {
-            var path = PathFinding.Instance.FindPath(startNode, node);
-            if (path?.Count > 0 && path?.Count <= range)
-            {
-                node.ToggleNodeByType(true, VisualNodeType.Attack);
-                node.canInteract = true;
-            }
+            node.ToggleNodeByType(true, VisualNodeType.Attack);
+            node.canInteract = true;
         }
     }
 
     void HandlePlayerWeaponRange()
     {
+        Node currentNodeOn = gridManager.CurrentNodeOn;
+        if (currentNodeOn != null && currentNodeOn.canInteract)
+        {
 
+            if (previousNodeOn != gridManager.CurrentNodeOn)
+            {
+                foreach (Node node in nodesInAttackRangeList)
+                {
+                    node.ToggleNodeByType(false, VisualNodeType.WeaponRange);
+                }
+                nodesInAttackRangeList = gridManager.GetNodesInRange(gridManager.CurrentNodeOn, currentSelectedPlayer.weaponRange);
+
+                foreach (Node node in nodesInAttackRangeList)
+                {
+                    node.ToggleNodeByType(true, VisualNodeType.WeaponRange);
+                }
+            }
+            previousNodeOn = gridManager.CurrentNodeOn;
+        }
     }
 
 }

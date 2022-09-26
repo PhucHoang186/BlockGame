@@ -6,7 +6,7 @@ using System.Linq;
 
 public class PlayerController : MoveableEntity
 {
-    public static Action<List<Node>, GameState> ON_SELECT_PATH;
+    public static Action<List<Node>, Action> ON_SELECT_PATH;
     public static Action<List<Node>> ON_ATTACK;
 
     public int weaponRange;
@@ -20,11 +20,5 @@ public class PlayerController : MoveableEntity
     void OnDestroy()
     {
         ON_SELECT_PATH -= MoveToPath;
-    }
-
-    public override IEnumerator MoveToPathCroutine(List<Node> _path, GameState _newState)
-    {
-        yield return base.MoveToPathCroutine(_path, _newState);
-        // GameEvents.ON_CHANGE_PLAYER_STATE?.Invoke(PlayerState.Movement);
     }
 }

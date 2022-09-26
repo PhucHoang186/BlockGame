@@ -5,8 +5,6 @@ using UnityEngine;
 public enum GameState
 {
     GenerateGrid,
-    PlayerTurn,
-    EnemyTurn,
 }
 public class GameManager : MonoBehaviour
 {
@@ -30,23 +28,7 @@ public class GameManager : MonoBehaviour
             case GameState.GenerateGrid:
                 GridManager.Instance.Init();
                 break;
-            case GameState.PlayerTurn:
-                HandlePlayerTurn();
-                break;
-            case GameState.EnemyTurn:
-                HandleEnemyTurn();
-                break;
-            default:
-                break;
+          
         }
-    }
-
-    private void HandlePlayerTurn()
-    {
-    }
-
-    private void HandleEnemyTurn()
-    {
-        EnemyController.Instance.HandleEnemyTurn();
     }
 }

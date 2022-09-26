@@ -686,7 +686,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377110, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
       propertyPath: attackRange
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4780422545475377110, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
+      propertyPath: weaponRange
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377111, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
       propertyPath: m_Name
@@ -9713,7 +9717,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377110, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
       propertyPath: attackRange
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4780422545475377110, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
+      propertyPath: weaponRange
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377111, guid: 3f6407dea47b43c44870c88e19a87af6, type: 3}
       propertyPath: m_Name

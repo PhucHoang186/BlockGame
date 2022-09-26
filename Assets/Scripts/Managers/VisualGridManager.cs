@@ -31,29 +31,13 @@ public class VisualGridManager : MonoSingleton<VisualGridManager>
         if (currentNodeOn != null)
         {
             ToggleMousePosition();
-            // HandleVisualAttackState();
             previousNodeOn = currentNodeOn;
         }
     }
 
-    public VisualGridType GetCurrentType()
+    public VisualNodeType GetCurrentType()
     {
-        return currentGridType;
-    }
-
-    private void HandleVisualAttackState()
-    {
-        if (isAttackState)
-        {
-            if (previousNodeOn != currentNodeOn)
-            {
-                ReleaseVisual();
-            }
-            else
-            {
-                // ToggleNodes(currentNodeOn, BattleSystem.Instance.currentSelectedPlayer.weaponRange, VisualNodeType.WeaponRange, false);
-            }
-        }
+        return currentNodeType;
     }
 
     private void GetCurrentNodeOn()
@@ -72,10 +56,10 @@ public class VisualGridManager : MonoSingleton<VisualGridManager>
 
     public void ReleaseVisual()
     {
-        foreach (Node node in inRangeNodes)
+        var gridList = GridManager.Instance.GetGridList();
+        foreach (Node node in gridList)
         {
             node.ToggleNodeByType(false, VisualNodeType.All);
         }
-        inRangeNodes.Clear();
     }
 }

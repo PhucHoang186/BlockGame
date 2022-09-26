@@ -67,7 +67,22 @@ public class Node : MonoBehaviour
 
         return EntityType.Null;
     }
-    
+
+    public bool IsPlayerNode()
+    {
+        return GetEntityType() == EntityType.Player;
+    }
+
+    public bool IsEnemyNode()
+    {
+        return GetEntityType() == EntityType.Enemy;
+    }
+
+    public bool IsCollectableNode()
+    {
+        return GetEntityType() == EntityType.Collectable;
+    }
+
     public Entity GetEntity()
     {
         return currentObjectPlaced;
@@ -121,7 +136,7 @@ public class Node : MonoBehaviour
                 ToggleAttack(_isActive);
                 ToggleWeaponRange(_isActive);
 
-                break; 
+                break;
             default:
                 break;
         }

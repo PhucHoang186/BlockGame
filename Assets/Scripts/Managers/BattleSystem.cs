@@ -83,7 +83,11 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     {
         SetBattleState(BattleState.Waiting);
         EnemyController.Instance.canMove = true;
-        EnemyController.ON_ENEMY_TURN?.Invoke(PathFinding.Instance.FindPath(EnemyController.Instance.currentNodePlaced, EnemyController.Instance.playerTarget.currentNodePlaced), () => SetBattleState(BattleState.PlayerTurn));
+        EnemyController.ON_ENEMY_TURN?.Invoke(PathFinding.Instance.FindPath(EnemyController.Instance.currentNodePlaced, EnemyController.Instance.playerTarget.currentNodePlaced), () =>
+        {
+            SetBattleState(BattleState.PlayerTurn);
+            SwitchPlayerState(PlayerState.Movement);
+        }); 
     }
 
     private void HandlePlayerTurn()
@@ -98,7 +102,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         if (Input.GetMouseButtonDown(0))
         {
             Node currentNodeOn = gridManager.CurrentNodeOn;
-            if (currentNodeOn == null) return;
+            if (currentNodeOn == null || currentNodeOn.IsPlayerNode()) return;
             if (currentNodeOn.canInteract)
             {
                 if (currentPlayerState == PlayerState.Movement)
@@ -110,10 +114,6 @@ public class BattleSystem : MonoSingleton<BattleSystem>
                     PlayerController.ON_ATTACK?.Invoke(nodesInAttackRangeList);
                 }
             }
-            // else if (currentNodeOn.GetEntity() != null && currentNodeOn.GetEntityType() != EntityType.Player && currentNodeOn.GetEntity().GetComponent<MoveableEntity>())
-            // {
-            //     currentSelectedPlayer.AttacK(GameState.EnemyTurn);
-            // }
         }
 
     }
@@ -141,15 +141,23 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         foreach (PlayerController player in playersList)
         {
             if (player == currentSelectedPlayer)
+            {
                 player.canMove = true;
+                player.canAttack = true;
+            }
             else
+            {
                 player.canMove = false;
+                player.canAttack = false;
+            }
         }
     }
 
     public void SwitchPlayerState(PlayerState _state)
     {
         VisualGridManager.Instance.ReleaseVisual();
+        ReleaseNodesState();
+
         currentPlayerState = _state;
         switch (_state)
         {
@@ -222,4 +230,13 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         }
     }
 
+
+    private void ReleaseNodesState()
+    {
+        var gridList = GridManager.Instance.GetGridList();
+        foreach (Node node in gridList)
+        {
+            node.canInteract = false;
+        }
+    }
 }

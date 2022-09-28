@@ -59,7 +59,6 @@ public class MoveableEntity : Entity, IDamageable
                 _path.RemoveAt(0);
             yield return new WaitForSeconds(moveTime);
         }
-        canMove = false;
         SetTriggerAnimation(Idle);
         cb?.Invoke();
     }
@@ -113,7 +112,6 @@ public class MoveableEntity : Entity, IDamageable
             damageable.TakeDamage(damageAmount);
 
         canAttack = true;
-        canMove = false;
         yield return new WaitForSeconds(ani.GetCurrentAnimatorClipInfo(0).Length);
         
         GameManager.Instance.SwitchState(_newState);

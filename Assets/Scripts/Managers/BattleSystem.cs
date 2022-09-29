@@ -87,7 +87,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         {
             SetBattleState(BattleState.PlayerTurn);
             SwitchPlayerState(PlayerState.Movement);
-        }); 
+        });
     }
 
     private void HandlePlayerTurn()
@@ -107,7 +107,11 @@ public class BattleSystem : MonoSingleton<BattleSystem>
             {
                 if (currentPlayerState == PlayerState.Movement)
                 {
-                    PlayerController.ON_SELECT_PATH?.Invoke(PathFinding.Instance.FindPath(currentSelectedPlayer.currentNodePlaced, currentNodeOn), () => SetBattleState(BattleState.EnemyTurn));
+                    PlayerController.ON_SELECT_PATH?.Invoke(PathFinding.Instance.FindPath(currentSelectedPlayer.currentNodePlaced, currentNodeOn), () =>
+                    {
+                        VisualGridManager.Instance.ReleaseVisual();
+                        gridManager.ReleaseNodesState();
+                    });
                 }
                 else if (currentPlayerState == PlayerState.Attack)
                 {
@@ -156,7 +160,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     public void SwitchPlayerState(PlayerState _state)
     {
         VisualGridManager.Instance.ReleaseVisual();
-        ReleaseNodesState();
+        gridManager.ReleaseNodesState();
 
         currentPlayerState = _state;
         switch (_state)
@@ -168,6 +172,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
                 HandlePlayerAttack();
                 break;
             case PlayerState.End:
+                HandlePlayerEndTurn();
                 break;
             default:
                 break;
@@ -230,13 +235,10 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         }
     }
 
-
-    private void ReleaseNodesState()
+    public void HandlePlayerEndTurn()
     {
-        var gridList = GridManager.Instance.GetGridList();
-        foreach (Node node in gridList)
-        {
-            node.canInteract = false;
-        }
+        VisualGridManager.Instance.ReleaseVisual();
+        gridManager.ReleaseNodesState();
+        SetBattleState(BattleState.EnemyTurn);
     }
 }

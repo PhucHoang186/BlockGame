@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public enum CommandType
 {
-    Movement, 
+    Movement,
     Attack,
     End,
 }
@@ -40,7 +40,6 @@ public class CommandPanel : MonoBehaviour
 
     public void OnEndTurnButtonPressed()
     {
-        //end turn
-        //switch to enemy turn
+        GameEvents.ON_CHANGE_PLAYER_STATE?.Invoke(PlayerState.End);
     }
 }

@@ -40,7 +40,7 @@ public class MoveableEntity : Entity, IDamageable
     #region  Movement
     public virtual void MoveToPath(List<Node> _path, Action cb = null)
     {
-        if(canMove)
+        if (canMove)
             StartCoroutine(MoveToPathCroutine(_path, cb));
     }
 
@@ -53,7 +53,7 @@ public class MoveableEntity : Entity, IDamageable
         while (moveStep < maxMoveStep && maxMoveStep <= moveRange)
         {
             moveStep += 1;
-            
+
             MoveToNode(_path.FirstOrDefault());
             if (_path.Count > 0)
                 _path.RemoveAt(0);
@@ -73,48 +73,6 @@ public class MoveableEntity : Entity, IDamageable
         {
             GridManager.Instance.MoveToNode(this.currentNodePlaced, _newNode, this);
         });
-    }
-    #endregion
-
-    #region Attack
-
-    public virtual void AttacK(GameState _newState)
-    {
-        CheckAttackRange(_newState);
-    }
-
-    public void CheckAttackRange(GameState _newState)
-    {
-        var neighborNodes = GridManager.Instance.GetNeighborNodeHasEntity(currentNodePlaced);
-        foreach (Node node in neighborNodes)
-        {
-            if (node.isPlaced && (node.currentObjectPlaced.GetComponent<MoveableEntity>()))
-            {
-                transform.DORotateQuaternion(Quaternion.LookRotation(node.transform.position - currentNodePlaced.transform.position), 0.5f).OnComplete(()
-                =>
-                {
-                    StartCoroutine(AttackCoroutine(_newState, node.currentObjectPlaced));
-                    return;
-                }
-                );
-            }
-        }
-    }
-
-    public IEnumerator AttackCoroutine(GameState _newState, Entity _entity)
-    {
-        canAttack = false;
-        SetTriggerAnimation(Attack);
-
-
-        var damageable = _entity.GetComponent<IDamageable>();
-        if (damageable != null)
-            damageable.TakeDamage(damageAmount);
-
-        canAttack = true;
-        yield return new WaitForSeconds(ani.GetCurrentAnimatorClipInfo(0).Length);
-        
-        GameManager.Instance.SwitchState(_newState);
     }
     #endregion
 
@@ -146,7 +104,9 @@ public class MoveableEntity : Entity, IDamageable
 
     public static readonly int Idle = Animator.StringToHash("Character_Idle");
     public static readonly int Attack = Animator.StringToHash("Character_Attack");
+    public static readonly int Attack_Bow = Animator.StringToHash("Character_Attack_Bow");
     public static readonly int Run = Animator.StringToHash("Character_Run");
+    public static readonly int Jump = Animator.StringToHash("Character_Jump");
 
     protected void SetTriggerAnimation(int _state, float _transitionTime = 0f)
     {

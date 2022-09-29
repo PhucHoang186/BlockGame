@@ -157,6 +157,15 @@ public class GridManager : MonoBehaviour
         return nodeList;
     }
 
+    public void ReleaseNodesState()
+    {
+        var gridList = GridManager.Instance.GetGridList();
+        foreach (Node node in gridList)
+        {
+            node.canInteract = false;
+        }
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

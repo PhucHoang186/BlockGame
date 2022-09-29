@@ -87,6 +87,11 @@ public class Node : MonoBehaviour
     {
         return currentObjectPlaced;
     }
+    
+    public bool HasEntity()
+    {
+        return currentObjectPlaced != null;
+    }
 
     public bool IsMoveableNode()
     {

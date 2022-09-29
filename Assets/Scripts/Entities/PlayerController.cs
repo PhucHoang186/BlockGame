@@ -27,11 +27,34 @@ public class PlayerController : MoveableEntity
 
     public void OnAttack(List<Node> attackNodeList)
     {
+        StartCoroutine(IEAttack(attackNodeList));
+    }
+
+    public IEnumerator IEAttack(List<Node> attackNodeList)
+    {
         if (canAttack)
         {
-            var lookDir = attackNodeList[0].transform.position - this.transform.position;
-            this.transform.DORotateQuaternion(Quaternion.Euler(0f, lookDir.y, 0f), 1f);
-            Debug.LogError("Attack");
+            var lookDir = GridManager.Instance.CurrentNodeOn.transform.position - this.transform.position;
+            this.transform.DORotateQuaternion(Quaternion.Euler(0f, lookDir.y, 0f), 1f).OnComplete(() =>
+            {
+                SetTriggerAnimation(Attack);
+                // yield return new WaitForSeconds(1f);
+                foreach (Node node in attackNodeList)
+                {
+                    if (node.HasEntity())
+                    {
+                        var damageable = node.GetEntity().GetComponent<IDamageable>();
+                        if (damageable != null)
+                        {
+                            damageable.TakeDamage(this.damageAmount);
+                        }
+                    }
+                }
+            });
         }
+        yield return null;
     }
+
+
+
 }

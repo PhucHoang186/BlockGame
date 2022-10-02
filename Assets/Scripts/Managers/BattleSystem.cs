@@ -27,6 +27,9 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     private List<Node> nodesInAttackRangeList;
     private BattleState currentBattleState;
     private PlayerState currentPlayerState;
+    public EnemyController currentEnemy;
+    private int enemyIndex;
+
     private Node previousNodeOn;
 
     void Awake()
@@ -79,17 +82,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         }
     }
 
-    private void HandleEnemyTurn()
-    {
-        SetBattleState(BattleState.Waiting);
-        EnemyController.Instance.canMove = true;
-        EnemyController.ON_ENEMY_TURN?.Invoke(PathFinding.Instance.FindPath(EnemyController.Instance.currentNodePlaced, EnemyController.Instance.playerTarget.currentNodePlaced), () =>
-        {
-            SetBattleState(BattleState.PlayerTurn);
-            SwitchPlayerState(PlayerState.Movement);
-        });
-    }
-
+    #region Player
     private void HandlePlayerTurn()
     {
         SelectedPlayer();
@@ -206,7 +199,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
 
         List<Node> attackNodeList = new List<Node>();
         attackNodeList = gridManager.GetNodesInRange(startNode, range);
-        attackNodeList.Remove(currentSelectedPlayer.currentNodePlaced);
+        attackNodeList.Remove(startNode);
         foreach (Node node in attackNodeList)
         {
             node.ToggleNodeByType(true, VisualNodeType.Attack);
@@ -243,4 +236,43 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         gridManager.ReleaseNodesState();
         SetBattleState(BattleState.EnemyTurn);
     }
+    #endregion
+
+    #region Enemy
+
+    private void HandleEnemyTurn()
+    {
+        GameUIManager.ON_UI_BLOCK_INPUT?.Invoke(true);
+        SetBattleState(BattleState.Waiting);
+        enemyIndex = 0;
+        EnemyHandle(enemyIndex);
+    }
+
+    private void EnemyHandle(int enemyIndex)
+    {
+        if (enemyIndex < enemiesList.Count)
+        {
+            currentEnemy = (EnemyController)enemiesList[enemyIndex];
+            currentEnemy.canMove = true;
+            currentEnemy.DetectNearestPlayer();
+            EnemyController.ON_ENEMY_TURN?.Invoke(PathFinding.Instance.FindPath(currentEnemy.currentNodePlaced, currentEnemy.playerTarget.currentNodePlaced), () =>
+            {
+               StartCoroutine(NextEnemyTurn());
+            });
+        }
+        else
+        {
+            GameUIManager.ON_UI_BLOCK_INPUT?.Invoke(false);
+            SetBattleState(BattleState.PlayerTurn);
+            SwitchPlayerState(PlayerState.Movement);
+        }
+    }
+
+    private IEnumerator NextEnemyTurn()
+    {
+        yield return new WaitForSeconds(1f);
+        enemyIndex += 1;
+        EnemyHandle(enemyIndex);
+    }
+    #endregion
 }

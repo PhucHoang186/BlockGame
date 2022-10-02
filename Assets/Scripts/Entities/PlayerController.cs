@@ -34,7 +34,6 @@ public class PlayerController : MoveableEntity
     public IEnumerator IEAttack(List<Node> attackNodeList)
     {
         var lookDir = (GridManager.Instance.CurrentNodeOn.transform.position - currentNodePlaced.transform.position).normalized;
-        Debug.LogError(lookDir);
         this.transform.DORotateQuaternion(Quaternion.LookRotation(lookDir), 1f);
         yield return new WaitForSeconds(1f);
         SetTriggerAnimation(Attack);

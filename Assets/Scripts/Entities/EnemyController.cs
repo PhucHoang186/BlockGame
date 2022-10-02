@@ -7,15 +7,8 @@ using System;
 
 public class EnemyController : MoveableEntity
 {
-    public static Action <List<Node>, Action> ON_ENEMY_TURN;
-    public static EnemyController Instance;
+    public static Action<List<Node>, Action> ON_ENEMY_TURN;
     public PlayerController playerTarget;
-    // private trans
-    void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-    }
 
     public override void Start()
     {
@@ -30,19 +23,23 @@ public class EnemyController : MoveableEntity
         ON_ENEMY_TURN -= MoveToPath;
     }
 
+    public void DetectNearestPlayer()
+    {
+        // playerTarget = 
+    }
+
     public override IEnumerator MoveToPathCroutine(List<Node> _path, Action cb)
     {
         int moveStep = 0;
         SetTriggerAnimation(Run);
 
-        while (moveStep < moveRange)
+        while (moveStep < _path.Count && moveStep < moveRange)
         {
-            moveStep += 1;
-
             MoveToNode(_path.FirstOrDefault());
             if (_path.Count > 0)
                 _path.RemoveAt(0);
             yield return new WaitForSeconds(moveTime);
+            moveStep += 1;
         }
         canMove = false;
         SetTriggerAnimation(Idle);

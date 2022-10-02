@@ -53,13 +53,12 @@ public class MoveableEntity : Entity, IDamageable
         while (moveStep < maxMoveStep && maxMoveStep <= moveRange)
         {
             moveStep += 1;
-
             MoveToNode(_path.FirstOrDefault());
             if (_path.Count > 0)
                 _path.RemoveAt(0);
             yield return new WaitForSeconds(moveTime);
         }
-        SetTriggerAnimation(Idle);
+        SetTriggerAnimation(Idle, 0.5f);
         cb?.Invoke();
     }
 
@@ -97,7 +96,6 @@ public class MoveableEntity : Entity, IDamageable
     public virtual void TakeDamage(int _damageAmount)
     {
         MinusHealth(_damageAmount);
-        Debug.LogError("take damage " + _damageAmount);
     }
     #endregion
 

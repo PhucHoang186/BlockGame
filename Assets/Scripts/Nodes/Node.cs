@@ -43,7 +43,7 @@ public class Node : MonoBehaviour
     public void Init()
     {
         // get object place on Node
-        var colliders = Physics.OverlapSphere(checkPoint.position, 1f, entityLayer);
+        var colliders = Physics.OverlapSphere(checkPoint.position, 0.5f, entityLayer);
         if (colliders.Length > 0)
         {
             Entity entity = colliders[0].transform.gameObject.GetComponent<Entity>();
@@ -62,7 +62,7 @@ public class Node : MonoBehaviour
 
     public EntityType GetEntityType()
     {
-        if (currentObjectPlaced != null)
+        if (!IsEmptyNode())
             return currentObjectPlaced.entityType;
 
         return EntityType.Null;
@@ -86,6 +86,11 @@ public class Node : MonoBehaviour
     public Entity GetEntity()
     {
         return currentObjectPlaced;
+    }
+
+    public bool IsEmptyNode()
+    {
+        return currentObjectPlaced == null;
     }
     
     public bool HasEntity()

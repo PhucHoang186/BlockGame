@@ -48,11 +48,11 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         gridManager = GridManager.Instance;
         foreach (var pairs in gridManager.GetGrid)
         {
-            if (pairs.Value.GetEntityType() == EntityType.Player)
+            if (pairs.Value.IsPlayerNode())
             {
                 playersList.Add((MoveableEntity)pairs.Value.currentObjectPlaced);
             }
-            else if (pairs.Value.GetEntityType() == EntityType.Enemy)
+            else if (pairs.Value.IsEnemyNode())
             {
                 enemiesList.Add((MoveableEntity)pairs.Value.currentObjectPlaced);
             }
@@ -107,10 +107,11 @@ public class BattleSystem : MonoSingleton<BattleSystem>
             {
                 if (currentPlayerState == PlayerState.Movement)
                 {
+                    VisualGridManager.Instance.ReleaseVisual();
+                    gridManager.ReleaseNodesState();
                     PlayerController.ON_SELECT_PATH?.Invoke(PathFinding.Instance.FindPath(currentSelectedPlayer.currentNodePlaced, currentNodeOn), () =>
                     {
-                        VisualGridManager.Instance.ReleaseVisual();
-                        gridManager.ReleaseNodesState();
+                        HandlePlayerMovement(); // temporary
                     });
                 }
                 else if (currentPlayerState == PlayerState.Attack)
@@ -205,6 +206,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
 
         List<Node> attackNodeList = new List<Node>();
         attackNodeList = gridManager.GetNodesInRange(startNode, range);
+        attackNodeList.Remove(currentSelectedPlayer.currentNodePlaced);
         foreach (Node node in attackNodeList)
         {
             node.ToggleNodeByType(true, VisualNodeType.Attack);

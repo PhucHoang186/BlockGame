@@ -97,6 +97,7 @@ public class MoveableEntity : Entity, IDamageable
     public virtual void TakeDamage(int _damageAmount)
     {
         MinusHealth(_damageAmount);
+        Debug.LogError("take damage " + _damageAmount);
     }
     #endregion
 

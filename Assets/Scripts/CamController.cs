@@ -7,6 +7,11 @@ public class CamController : MonoBehaviour
 {
     public Transform focusMap;
     public List<VirtualCam> cams;
+    
+    public float minZoomRange;
+    public float maxZoomRange;
+    private float currentZoomRange;
+
     private VirtualCam currentCam;
 
     private Vector3 lastMousePos;
@@ -14,6 +19,7 @@ public class CamController : MonoBehaviour
     {
         cams = GetComponentsInChildren<VirtualCam>().ToList();
         SetCurrentCam(CamType.MapViewCam, focusMap, focusMap);
+        currentZoomRange = currentCam.virtualCamera.m_Lens.FieldOfView;
     }
 
     public void SetCurrentCam(CamType camType, Transform lookAt = null, Transform follow = null)
@@ -41,16 +47,18 @@ public class CamController : MonoBehaviour
     {
         if (currentCam.GetCamType() == CamType.MapViewCam)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(1))
             {
                 Vector3 deltMousePos = (Input.mousePosition - lastMousePos).normalized;
                 lastMousePos = Input.mousePosition;
-                focusMap.Rotate(0f, deltMousePos.x * 50f * Time.deltaTime, 0f);
+                focusMap.Rotate(0f, deltMousePos.x * 150f * Time.deltaTime, 0f);
             }
-            if (Input.mouseScrollDelta.x != 0)
-            {
-
+            if (Input.mouseScrollDelta.y != 0)
+            {   currentZoomRange -= Input.mouseScrollDelta.y * 5f;
+                currentZoomRange = Mathf.Clamp(currentZoomRange, minZoomRange, maxZoomRange);
+                currentCam.virtualCamera.m_Lens.FieldOfView = currentZoomRange;
             }
+            
         }
     }
 

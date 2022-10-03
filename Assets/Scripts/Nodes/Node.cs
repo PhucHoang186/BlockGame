@@ -8,6 +8,7 @@ public enum VisualNodeType
     Hover,
     Attack,
     WeaponRange,
+    ToggleEnemy,
     All,
 }
 
@@ -39,6 +40,7 @@ public class Node : MonoBehaviour
     [SerializeField] SpriteRenderer highlightSprite;
     [SerializeField] SpriteRenderer attackSprite;
     [SerializeField] SpriteRenderer weaponRangeSprite;
+    [SerializeField] SpriteRenderer ToggleEnemySprite;
 
     public void Init()
     {
@@ -92,7 +94,7 @@ public class Node : MonoBehaviour
     {
         return currentObjectPlaced == null;
     }
-    
+
     public bool HasEntity()
     {
         return currentObjectPlaced != null;
@@ -140,12 +142,15 @@ public class Node : MonoBehaviour
             case VisualNodeType.WeaponRange:
                 ToggleWeaponRange(_isActive);
                 break;
+            case VisualNodeType.ToggleEnemy:
+                ToggleEnemy(_isActive);
+                break;
             case VisualNodeType.All:
                 ToggleHover(_isActive);
                 ToggleMovement(_isActive);
                 ToggleAttack(_isActive);
                 ToggleWeaponRange(_isActive);
-
+                ToggleEnemy(_isActive);
                 break;
             default:
                 break;
@@ -171,5 +176,10 @@ public class Node : MonoBehaviour
     public void ToggleWeaponRange(bool _isActive)
     {
         weaponRangeSprite.gameObject.SetActive(_isActive);
+    }
+
+    public void ToggleEnemy(bool _isActive)
+    {
+        ToggleEnemySprite.gameObject.SetActive(_isActive);
     }
 }

@@ -85,9 +85,9 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     #region Player
     private void HandlePlayerTurn()
     {
-        SelectedPlayer();
-
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+
+        SelectedPlayer();
 
         if (currentPlayerState == PlayerState.Attack)
             HandlePlayerWeaponRange();
@@ -217,13 +217,13 @@ public class BattleSystem : MonoSingleton<BattleSystem>
             {
                 foreach (Node node in nodesInAttackRangeList)
                 {
-                    node.ToggleNodeByType(false, VisualNodeType.WeaponRange);
+                    node.ToggleNodeByType(false, node.IsEnemyNode() ? VisualNodeType.ToggleEnemy : VisualNodeType.WeaponRange);
                 }
                 nodesInAttackRangeList = gridManager.GetNodesInRange(gridManager.CurrentNodeOn, currentSelectedPlayer.weaponRange);
 
                 foreach (Node node in nodesInAttackRangeList)
                 {
-                    node.ToggleNodeByType(true, VisualNodeType.WeaponRange);
+                    node.ToggleNodeByType(true, node.IsEnemyNode() ? VisualNodeType.ToggleEnemy : VisualNodeType.WeaponRange);
                 }
             }
             previousNodeOn = gridManager.CurrentNodeOn;
@@ -257,7 +257,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
             currentEnemy.DetectNearestPlayer();
             EnemyController.ON_ENEMY_TURN?.Invoke(PathFinding.Instance.FindPath(currentEnemy.currentNodePlaced, currentEnemy.playerTarget.currentNodePlaced), () =>
             {
-               StartCoroutine(NextEnemyTurn());
+                StartCoroutine(NextEnemyTurn());
             });
         }
         else

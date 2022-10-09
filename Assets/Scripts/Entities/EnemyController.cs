@@ -31,6 +31,7 @@ public class EnemyController : MoveableEntity
     public override IEnumerator MoveToPathCroutine(List<Node> _path, Action cb)
     {
         int moveStep = 0;
+        moveParticle.Play();
         SetTriggerAnimation(Run);
 
         while (moveStep < _path.Count && moveStep < moveRange)
@@ -43,6 +44,7 @@ public class EnemyController : MoveableEntity
         }
         canMove = false;
         SetTriggerAnimation(Idle);
+        moveParticle.Stop();
         cb?.Invoke();
     }
 
@@ -83,5 +85,22 @@ public class EnemyController : MoveableEntity
         yield return new WaitForSeconds(ani.GetCurrentAnimatorClipInfo(0).Length);
 
         GameManager.Instance.SwitchState(_newState);
+    }
+
+    public override void MinusHealth(int _healthAmount)
+    {
+        CurrentHealth -= _healthAmount;
+        if (currentHealth <= 0)
+        {
+            CurrentHealth = 0;
+            GameEvents.ON_ENEMY_DESTROY(this);
+            SetTriggerAnimation(Defeat);
+        }
+    }
+
+    public void ReleaseOnDestroy()
+    {
+        currentNodePlaced.ReleaseNode();
+        currentNodePlaced.ToggleNodeByType(false, VisualNodeType.ToggleEnemy);
     }
 }

@@ -33,6 +33,7 @@ public class Node : MonoBehaviour
     public Entity currentObjectPlaced;
     public bool isPlaced;
     public bool canInteract;
+    public bool isNull;
     [SerializeField] private LayerMask entityLayer;
     [SerializeField] private LayerMask nodeLayer;
     [SerializeField] Transform checkPoint;
@@ -56,9 +57,10 @@ public class Node : MonoBehaviour
             }
         }
         // get Node
-        if (Physics.OverlapSphere(transform.position, 1f, nodeLayer).Length == 0)
+        if (Physics.OverlapSphere(transform.position, 0.5f, nodeLayer).Length == 0)
         {
-            Destroy(this);
+            isNull = true;
+            // Destroy(this.gameObject);
         }
     }
 

@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
             case GameState.GenerateGrid:
                 GridManager.Instance.Init();
                 break;
-          
+
         }
     }
 }

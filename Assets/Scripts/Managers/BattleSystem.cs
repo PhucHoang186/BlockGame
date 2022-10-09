@@ -31,15 +31,18 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     private int enemyIndex;
 
     private Node previousNodeOn;
+    private bool hasTargetInRange;
 
     void Awake()
     {
         GameEvents.ON_CHANGE_PLAYER_STATE += SwitchPlayerState;
+        GameEvents.ON_ENEMY_DESTROY += OnEnemyDestroy;
     }
 
     void OnDestroy()
     {
         GameEvents.ON_CHANGE_PLAYER_STATE -= SwitchPlayerState;
+        GameEvents.ON_ENEMY_DESTROY -= OnEnemyDestroy;
     }
 
     public void Init()
@@ -68,6 +71,12 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     {
         HandleBattleState();
 
+    }
+
+    public void OnEnemyDestroy(EnemyController enemy)
+    {
+        enemiesList.Remove(enemy);
+        enemy.ReleaseOnDestroy();
     }
 
     private void HandleBattleState()
@@ -107,7 +116,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
                         HandlePlayerMovement(); // temporary
                     });
                 }
-                else if (currentPlayerState == PlayerState.Attack)
+                else if (currentPlayerState == PlayerState.Attack && hasTargetInRange)
                 {
                     PlayerController.ON_ATTACK?.Invoke(nodesInAttackRangeList);
                 }
@@ -184,7 +193,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
         foreach (Node node in movementNodeList)
         {
             var path = PathFinding.Instance.FindPath(startNode, node);
-            if (path?.Count > 0 && path?.Count <= range)
+            if (path?.Count > 0 && path?.Count <= range && !node.isPlaced)
             {
                 node.ToggleNodeByType(true, VisualNodeType.Movement);
                 node.canInteract = true;
@@ -218,12 +227,15 @@ public class BattleSystem : MonoSingleton<BattleSystem>
                 foreach (Node node in nodesInAttackRangeList)
                 {
                     node.ToggleNodeByType(false, node.IsEnemyNode() ? VisualNodeType.ToggleEnemy : VisualNodeType.WeaponRange);
+                    hasTargetInRange = false;
                 }
                 nodesInAttackRangeList = gridManager.GetNodesInRange(gridManager.CurrentNodeOn, currentSelectedPlayer.weaponRange);
 
                 foreach (Node node in nodesInAttackRangeList)
                 {
                     node.ToggleNodeByType(true, node.IsEnemyNode() ? VisualNodeType.ToggleEnemy : VisualNodeType.WeaponRange);
+                    if(node.IsEnemyNode())
+                        hasTargetInRange = true;
                 }
             }
             previousNodeOn = gridManager.CurrentNodeOn;

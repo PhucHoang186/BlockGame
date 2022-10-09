@@ -13,9 +13,8 @@ public class GridManager : MonoBehaviour
     public Dictionary<Vector3, Node> GetGrid => grids;
     private Node currentNodeOn;
     private Camera cam;
-
     public Node CurrentNodeOn => currentNodeOn;
-    
+
     // Init player, object position
     void Awake()
     {
@@ -38,6 +37,7 @@ public class GridManager : MonoBehaviour
     private void GetCurrentNodeOn()
     {
         var ray = cam.ScreenPointToRay(Input.mousePosition);
+
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             currentNodeOn = GetNodeByPosition(hit.transform.position);
@@ -50,11 +50,11 @@ public class GridManager : MonoBehaviour
         _newNode.PlaceObjectOnNode(_entity);
     }
 
-    public Node GetNodeById(Vector3 _nodeId)
+    public Node GetNodeById(int _x, int _y)
     {
-        if (grids.ContainsKey(_nodeId))
+        if (grids.ContainsKey(new Vector3(_x, 0f, _y)))
         {
-            return grids[_nodeId];
+            return grids[new Vector3(_x, 0f, _y)];
         }
         else
         {
@@ -96,7 +96,7 @@ public class GridManager : MonoBehaviour
                     continue;
                 int x = _node.x + i;
                 int y = _node.y + j;
-                if (x >= 0 && x < gridGenerator.weight && y >= 0 && y < gridGenerator.height)
+                if (x >= 0 && x < gridGenerator.weight && y >= 0 && y < gridGenerator.height && GetNodeById(x, y) != null)
                 {
                     neighborNodes.Add(grids[new Vector3(x, 0f, y)]);
                 }

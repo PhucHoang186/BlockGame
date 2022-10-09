@@ -1,43 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Linq;
 using DG.Tweening;
 
-public class PlayerController : MoveableEntity
+public class MageController : PlayerController
 {
-    public static Action<List<Node>, Action> ON_SELECT_PATH;
-    public static Action<List<Node>> ON_ATTACK;
-
-    public int weaponRange;
-
-    public override void Start()
+    public Projectile meteoritePref;
+    public override IEnumerator IEAttack(List<Node> attackNodeList)
     {
-        base.Start();
-        ON_SELECT_PATH += MoveToPath;
-        ON_ATTACK += OnAttack;
-    }
-
-    void OnDestroy()
-    {
-        ON_SELECT_PATH -= MoveToPath;
-        ON_ATTACK -= OnAttack;
-    }
-
-    public void OnAttack(List<Node> attackNodeList)
-    {
-        if (canAttack)
-            StartCoroutine(IEAttack(attackNodeList));
-    }
-
-    public IEnumerator IEAttack(List<Node> attackNodeList)
-    {
+        GameUIManager.ON_UI_BLOCK_INPUT?.Invoke(true);
         var lookDir = (GridManager.Instance.CurrentNodeOn.transform.position - currentNodePlaced.transform.position).normalized;
         this.transform.DORotateQuaternion(Quaternion.LookRotation(lookDir), 1f);
-        yield return new WaitForSeconds(1f);
+
         SetTriggerAnimation(Attack);
         yield return new WaitForSeconds(1f);
+        foreach (Node node in attackNodeList)
+        {
+            var meteoriteOb = Instantiate(meteoritePref);
+            meteoriteOb.FallToPosition(node.transform.position + new Vector3(0f, 0.5f, 0f));
+        }
+
+        yield return new WaitForSeconds(1.5f);
 
         foreach (Node node in attackNodeList)
         {
@@ -50,8 +33,6 @@ public class PlayerController : MoveableEntity
                 }
             }
         }
+        GameUIManager.ON_UI_BLOCK_INPUT?.Invoke(false);
     }
-
-
-
 }

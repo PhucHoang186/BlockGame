@@ -28,11 +28,15 @@ public class GridGenerator : MonoBehaviour
                 newNode.transform.parent = transform;
                 newNode.transform.position = new Vector3(i, 0f, j) * _nodeSize;
                 newNode.Init();
-                if (newNode)
+                if (!newNode.isNull)
                 {
                     newNode.x = i;
                     newNode.y = j;
                     _grids.Add(new Vector3(i, 0f, j), newNode);
+                }
+                else
+                {
+                    Destroy(newNode.gameObject);
                 }
             }
         }

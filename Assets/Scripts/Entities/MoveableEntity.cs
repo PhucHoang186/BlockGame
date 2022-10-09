@@ -11,12 +11,13 @@ public class MoveableEntity : Entity, IDamageable
     public float rotateTime;
     public int moveRange;
     public int attackRange;
-    public bool canMove;
-    public bool canAttack;
     public int damageAmount = 0;
+    [HideInInspector] public bool canMove;
+    [HideInInspector] public bool canAttack;
     [Space(5)]
     public int maxHealth = 10;
-    public int currentHealth;
+    public ParticleSystem moveParticle;
+    protected int currentHealth;
     public int CurrentHealth
     {
         get { return currentHealth; }
@@ -46,6 +47,7 @@ public class MoveableEntity : Entity, IDamageable
 
     public virtual IEnumerator MoveToPathCroutine(List<Node> _path, Action cb = null)
     {
+        moveParticle.Play();
         int moveStep = 0;
         int maxMoveStep = _path.Count;
         SetTriggerAnimation(Run);
@@ -59,12 +61,13 @@ public class MoveableEntity : Entity, IDamageable
             yield return new WaitForSeconds(moveTime);
         }
         SetTriggerAnimation(Idle, 0.5f);
+        moveParticle.Stop();
         cb?.Invoke();
     }
 
     public virtual void MoveToNode(Node _newNode)
     {
-        if (_newNode == null || _newNode.isPlaced)
+        if (_newNode == null)
             return;
 
         transform.DORotateQuaternion(Quaternion.LookRotation(_newNode.transform.position - currentNodePlaced.transform.position), 0.5f);
@@ -89,13 +92,14 @@ public class MoveableEntity : Entity, IDamageable
         if (currentHealth <= 0)
         {
             CurrentHealth = 0;
-            Destroy(this.gameObject);
+            SetTriggerAnimation(Defeat);
         }
     }
 
     public virtual void TakeDamage(int _damageAmount)
     {
         MinusHealth(_damageAmount);
+        SetTriggerAnimation(GetHit);
     }
     #endregion
 
@@ -106,8 +110,10 @@ public class MoveableEntity : Entity, IDamageable
     public static readonly int Attack_Bow = Animator.StringToHash("Character_Attack_Bow");
     public static readonly int Run = Animator.StringToHash("Character_Run");
     public static readonly int Jump = Animator.StringToHash("Character_Jump");
+    public static readonly int Defeat = Animator.StringToHash("Character_Defeat");
+    public static readonly int GetHit = Animator.StringToHash("Character_Hit");
 
-    protected void SetTriggerAnimation(int _state, float _transitionTime = 0f)
+    public void SetTriggerAnimation(int _state, float _transitionTime = 0f)
     {
         ani.CrossFade(_state, _transitionTime, 0);
     }

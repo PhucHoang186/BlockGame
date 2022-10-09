@@ -15922,10 +15922,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 491593389}
     m_Modifications:
-    - target: {fileID: 4780422545475377110, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: moveRange
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377111, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
       propertyPath: m_Name
       value: Knight
@@ -15973,66 +15969,6 @@ PrefabInstance:
     - target: {fileID: 5268270754287603053, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: looping
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: UVModule.mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: UVModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: ColorModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: InitialModule.startSize.minScalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: InitialModule.gravityModifier.scalar
-      value: -0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: InitialModule.startLifetime.minScalar
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: UVModule.sprites.Array.data[0].sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 0d10b900ab0a4b44c811682eb58984af, type: 3}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: EmissionModule.rateOverDistance.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key0.b
-      value: 0.7161356
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key0.g
-      value: 0.7161356
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965712, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key0.r
-      value: 0.7264151
-      objectReference: {fileID: 0}
-    - target: {fileID: 6561808874319965713, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 6561808874319965718, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6940382493651162706, guid: 2db4491d4fdff67438292f8083f0db2b, type: 3}
       propertyPath: m_AnchorMax.x
@@ -29898,13 +29834,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   colorGradientTexture: {fileID: 0}
-  shallowColor: {r: 0.089615606, g: 0.86594135, b: 1, a: 1}
-  deepColor: {r: 0.28247613, g: 0.40703773, b: 0.8679245, a: 1}
+  shallowColor: {r: 0.08961513, g: 0.86594135, b: 1, a: 1}
+  deepColor: {r: 0.28247553, g: 0.40703714, b: 0.8679245, a: 1}
   colorDepth: 2.59
-  horizonColor: {r: 0, g: 0.28233805, b: 1, a: 1}
+  horizonColor: {r: 0, g: 0.28233746, b: 1, a: 1}
   horizonDistance: 20
   shoreFade: 0
-  shoreColor: {r: 0, g: 0.98039216, b: 0.30188206, a: 0}
+  shoreColor: {r: 0, g: 0.98039216, b: 0.30188146, a: 0}
   shoreStrength: 0
   shoreBlend: 0
   shoreDepth: 0

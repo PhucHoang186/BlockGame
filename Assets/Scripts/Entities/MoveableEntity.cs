@@ -89,17 +89,19 @@ public class MoveableEntity : Entity, IDamageable
     public virtual void MinusHealth(int _healthAmount)
     {
         CurrentHealth -= _healthAmount;
+        SetTriggerAnimation(GetHit);
         if (currentHealth <= 0)
         {
             CurrentHealth = 0;
             SetTriggerAnimation(Defeat);
+            Destroy(healthDisplay.transform.parent.gameObject);
         }
     }
 
     public virtual void TakeDamage(int _damageAmount)
     {
         MinusHealth(_damageAmount);
-        SetTriggerAnimation(GetHit);
+        
     }
     #endregion
 

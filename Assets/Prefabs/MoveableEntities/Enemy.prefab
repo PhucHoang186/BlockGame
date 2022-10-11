@@ -539,7 +539,7 @@ MonoBehaviour:
   offset: {x: 0, y: 1, z: 0}
   entityType: 2
   currentNodePlaced: {fileID: 0}
-  moveTime: 0.8
+  moveTime: 0.55
   rotateTime: 0.1
   moveRange: 2
   attackRange: 0
@@ -1021,6 +1021,18 @@ PrefabInstance:
     - target: {fileID: 3056164444160083194, guid: eb267c05240ba7e4fa97db8a63e5eff7, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7046426034456946696, guid: eb267c05240ba7e4fa97db8a63e5eff7, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7046426034456946696, guid: eb267c05240ba7e4fa97db8a63e5eff7, type: 3}
+      propertyPath: m_Color.g
+      value: 0.010103254
+      objectReference: {fileID: 0}
+    - target: {fileID: 7046426034456946696, guid: eb267c05240ba7e4fa97db8a63e5eff7, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7788846199737883364, guid: eb267c05240ba7e4fa97db8a63e5eff7, type: 3}
       propertyPath: m_PresetInfoIsWorld

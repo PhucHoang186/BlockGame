@@ -40,6 +40,7 @@ public class EnemyController : MoveableEntity
             if (_path.Count > 0)
                 _path.RemoveAt(0);
             yield return new WaitForSeconds(moveTime);
+            AttacK(GameState.GenerateGrid);
             moveStep += 1;
         }
         canMove = false;
@@ -55,11 +56,12 @@ public class EnemyController : MoveableEntity
 
     public void CheckAttackRange(GameState _newState)
     {
-        var neighborNodes = GridManager.Instance.GetNeighborNodeHasEntity(currentNodePlaced);
+        var neighborNodes = GridManager.Instance.GetNeighborNode(currentNodePlaced);
         foreach (Node node in neighborNodes)
         {
-            if (node.isPlaced && (node.currentObjectPlaced.GetComponent<MoveableEntity>()))
+            if ((node.IsPlayerNode()))
             {
+                Debug.LogError("Is Player");
                 transform.DORotateQuaternion(Quaternion.LookRotation(node.transform.position - currentNodePlaced.transform.position), 0.5f).OnComplete(()
                 =>
                 {
@@ -84,7 +86,7 @@ public class EnemyController : MoveableEntity
         canAttack = true;
         yield return new WaitForSeconds(ani.GetCurrentAnimatorClipInfo(0).Length);
 
-        GameManager.Instance.SwitchState(_newState);
+        // GameManager.Instance.SwitchState(_newState);
     }
 
     public override void MinusHealth(int _healthAmount)

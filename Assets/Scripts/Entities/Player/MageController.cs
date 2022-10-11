@@ -14,11 +14,9 @@ public class MageController : PlayerController
 
         SetTriggerAnimation(Attack);
         yield return new WaitForSeconds(1f);
-        foreach (Node node in attackNodeList)
-        {
-            var meteoriteOb = Instantiate(meteoritePref);
-            meteoriteOb.FallToPosition(node.transform.position + new Vector3(0f, 0.5f, 0f));
-        }
+
+        var meteoriteOb = Instantiate(meteoritePref);
+        meteoriteOb.FallToPosition(attackNodeList[0].transform.position + new Vector3(0f, 0.5f, 0f));
 
         yield return new WaitForSeconds(1.5f);
 

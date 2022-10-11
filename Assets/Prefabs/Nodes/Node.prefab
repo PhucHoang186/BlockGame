@@ -156,7 +156,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 9f0335bd61e14274882ec8b1d0f7fb45, type: 3}
   m_Color: {r: 1, g: 0.19339621, b: 0.19339621, a: 1}
   m_FlipX: 0
@@ -227,6 +227,7 @@ MonoBehaviour:
   currentObjectPlaced: {fileID: 0}
   isPlaced: 0
   canInteract: 0
+  isNull: 0
   entityLayer:
     serializedVersion: 2
     m_Bits: 128

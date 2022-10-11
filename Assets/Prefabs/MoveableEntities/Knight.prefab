@@ -524,7 +524,7 @@ MonoBehaviour:
   offset: {x: 0, y: 1, z: 0}
   entityType: 1
   currentNodePlaced: {fileID: 0}
-  moveTime: 0.8
+  moveTime: 0.55
   rotateTime: 0.1
   moveRange: 2
   attackRange: 1

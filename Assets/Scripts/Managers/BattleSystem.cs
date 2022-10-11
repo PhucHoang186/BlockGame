@@ -145,6 +145,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     {
         currentSelectedPlayer = _player;
         GameEvents.ON_CHANGE_PLAYER_STATE?.Invoke(PlayerState.Movement);
+        // CamController.Instance.SetCamFollowPlayer(currentSelectedPlayer);
         foreach (PlayerController player in playersList)
         {
             if (player == currentSelectedPlayer)
@@ -226,16 +227,23 @@ public class BattleSystem : MonoSingleton<BattleSystem>
             {
                 foreach (Node node in nodesInAttackRangeList)
                 {
-                    node.ToggleNodeByType(false, node.IsEnemyNode() ? VisualNodeType.ToggleEnemy : VisualNodeType.WeaponRange);
+                    node.ToggleNodeByType(false, VisualNodeType.WeaponRange);
+                    if (node.IsEnemyNode())
+                    {
+                        node.ToggleNodeByType(false, VisualNodeType.ToggleEnemy);
+                    }
                     hasTargetInRange = false;
                 }
                 nodesInAttackRangeList = gridManager.GetNodesInRange(gridManager.CurrentNodeOn, currentSelectedPlayer.weaponRange);
 
                 foreach (Node node in nodesInAttackRangeList)
                 {
-                    node.ToggleNodeByType(true, node.IsEnemyNode() ? VisualNodeType.ToggleEnemy : VisualNodeType.WeaponRange);
-                    if(node.IsEnemyNode())
+                    node.ToggleNodeByType(true, VisualNodeType.WeaponRange);
+                    if (node.IsEnemyNode())
+                    {
+                        node.ToggleNodeByType(true, VisualNodeType.ToggleEnemy);
                         hasTargetInRange = true;
+                    }
                 }
             }
             previousNodeOn = gridManager.CurrentNodeOn;

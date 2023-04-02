@@ -17,6 +17,7 @@ public class MoveableEntity : Entity, IDamageable
     [Space(5)]
     public int maxHealth = 10;
     public ParticleSystem moveParticle;
+    public HealthDisplay healthDisplay;
     protected int currentHealth;
     public int CurrentHealth
     {
@@ -36,7 +37,6 @@ public class MoveableEntity : Entity, IDamageable
         healthDisplay.SetMaxHealth(maxHealth);
     }
 
-    public HealthDisplay healthDisplay;
 
     #region  Movement
     public virtual void MoveToPath(List<Node> _path, Action cb = null)
@@ -94,7 +94,7 @@ public class MoveableEntity : Entity, IDamageable
         {
             CurrentHealth = 0;
             SetTriggerAnimation(Defeat);
-            Destroy(healthDisplay.transform.parent.gameObject);
+            healthDisplay.transform.parent.gameObject.SetActive(false);
         }
     }
 

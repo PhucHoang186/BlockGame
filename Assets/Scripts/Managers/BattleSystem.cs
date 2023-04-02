@@ -63,7 +63,6 @@ public class BattleSystem : MonoSingleton<BattleSystem>
                 enemiesList.Add((MoveableEntity)pairs.Value.currentObjectPlaced);
             }
         }
-        // SetBattleState(BattleState.PlayerTurn);
         SetCurrentPlayer((PlayerController)playersList[0]);
     }
 
@@ -76,7 +75,6 @@ public class BattleSystem : MonoSingleton<BattleSystem>
     public void OnEnemyDestroy(EnemyController enemy)
     {
         enemiesList.Remove(enemy);
-        enemy.ReleaseOnDestroy();
     }
 
     private void HandleBattleState()
@@ -275,7 +273,7 @@ public class BattleSystem : MonoSingleton<BattleSystem>
             currentEnemy = (EnemyController)enemiesList[enemyIndex];
             currentEnemy.canMove = true;
             currentEnemy.DetectNearestPlayer();
-            EnemyController.ON_ENEMY_TURN?.Invoke(PathFinding.Instance.FindPath(currentEnemy.currentNodePlaced, currentEnemy.playerTarget.currentNodePlaced), () =>
+            EnemyController.ON_ENEMY_MOVE?.Invoke(PathFinding.Instance.FindPath(currentEnemy.currentNodePlaced, currentEnemy.playerTarget.currentNodePlaced), () =>
             {
                 StartCoroutine(NextEnemyTurn());
             });

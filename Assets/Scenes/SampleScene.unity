@@ -1304,13 +1304,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   colorGradientTexture: {fileID: 0}
-  shallowColor: {r: 0.08960911, g: 0.86594135, b: 1, a: 1}
-  deepColor: {r: 0.28246805, g: 0.40702966, b: 0.8679245, a: 1}
+  shallowColor: {r: 0.08960513, g: 0.86594135, b: 1, a: 1}
+  deepColor: {r: 0.28246307, g: 0.40702468, b: 0.8679245, a: 1}
   colorDepth: 2.59
-  horizonColor: {r: 0, g: 0.28232998, b: 1, a: 1}
+  horizonColor: {r: 0, g: 0.282325, b: 1, a: 1}
   horizonDistance: 20
   shoreFade: 0
-  shoreColor: {r: 0, g: 0.98039216, b: 0.30187398, a: 0}
+  shoreColor: {r: 0, g: 0.98039216, b: 0.301869, a: 0}
   shoreStrength: 0
   shoreBlend: 0
   shoreDepth: 0
@@ -3346,19 +3346,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377111, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4892758532098046125, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4892758532098046125, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4892758532098046125, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5268270754287603053, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_RootOrder
@@ -5150,7 +5150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1178782183432299655, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: damageAmount
-      value: 100
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377111, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_Name
@@ -5782,19 +5782,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377111, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4892758532098046125, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4892758532098046125, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4892758532098046125, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5268270754287603053, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_RootOrder
@@ -14984,7 +14984,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957326012}
-  m_LocalRotation: {x: 0.27059808, y: -0.65328145, z: 0.270598, w: 0.65328157}
+  m_LocalRotation: {x: 0.27059805, y: -0.6532815, z: 0.27059802, w: 0.6532815}
   m_LocalPosition: {x: 42, y: 26, z: 19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15220,7 +15220,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.27059808, y: -0.65328145, z: 0.270598, w: 0.65328157}
+  m_LocalRotation: {x: 0.27059805, y: -0.6532815, z: 0.27059802, w: 0.6532815}
   m_LocalPosition: {x: 42, y: 26, z: 19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -27447,19 +27447,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4780422545475377111, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4892758532098046125, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4892758532098046125, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4892758532098046125, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5268270754287603053, guid: 59ac05c36fa9e4a43aa50c74fd1cbd7a, type: 3}
       propertyPath: m_RootOrder
@@ -34745,13 +34745,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   colorGradientTexture: {fileID: 0}
-  shallowColor: {r: 0.089609094, g: 0.86594135, b: 1, a: 1}
-  deepColor: {r: 0.28246802, g: 0.40702963, b: 0.8679245, a: 1}
+  shallowColor: {r: 0.0896051, g: 0.86594135, b: 1, a: 1}
+  deepColor: {r: 0.28246304, g: 0.40702465, b: 0.8679245, a: 1}
   colorDepth: 2.59
-  horizonColor: {r: 0, g: 0.28232995, b: 1, a: 1}
+  horizonColor: {r: 0, g: 0.28232497, b: 1, a: 1}
   horizonDistance: 20
   shoreFade: 0
-  shoreColor: {r: 0, g: 0.98039216, b: 0.30187395, a: 0}
+  shoreColor: {r: 0, g: 0.98039216, b: 0.30186898, a: 0}
   shoreStrength: 0
   shoreBlend: 0
   shoreDepth: 0

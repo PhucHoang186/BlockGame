@@ -7,7 +7,7 @@ using System;
 
 public class EnemyController : MoveableEntity
 {
-    public static Action<List<Node>, Action> ON_ENEMY_TURN;
+    public static Action<List<Node>, Action> ON_ENEMY_MOVE;
     public PlayerController playerTarget;
 
     public override void Start()
@@ -15,12 +15,14 @@ public class EnemyController : MoveableEntity
         base.Start();
         var playerObj = GameObject.FindGameObjectWithTag("Player");
         playerTarget = playerObj.GetComponent<PlayerController>();
-        ON_ENEMY_TURN += MoveToPath;
+        ON_ENEMY_MOVE += MoveToPath;
+        GameEvents.ON_ENEMY_DESTROY += OnEnemyDestroy;
     }
 
     void OnDestroy()
     {
-        ON_ENEMY_TURN -= MoveToPath;
+        ON_ENEMY_MOVE -= MoveToPath;
+        GameEvents.ON_ENEMY_DESTROY -= OnEnemyDestroy;
     }
 
     public void DetectNearestPlayer()
@@ -33,8 +35,8 @@ public class EnemyController : MoveableEntity
         int moveStep = 0;
         moveParticle.Play();
         SetTriggerAnimation(Run);
-
-        while (moveStep < _path.Count && moveStep < moveRange)
+        Debug.LogError(moveRange + " " + _path.Count);
+        while (_path.Count > 1 && moveStep < moveRange)
         {
             MoveToNode(_path.FirstOrDefault());
             if (_path.Count > 0)
@@ -61,7 +63,6 @@ public class EnemyController : MoveableEntity
         {
             if ((node.IsPlayerNode()))
             {
-                Debug.LogError("Is Player");
                 transform.DORotateQuaternion(Quaternion.LookRotation(node.transform.position - currentNodePlaced.transform.position), 0.5f).OnComplete(()
                 =>
                 {
@@ -97,11 +98,13 @@ public class EnemyController : MoveableEntity
             CurrentHealth = 0;
             GameEvents.ON_ENEMY_DESTROY(this);
             SetTriggerAnimation(Defeat);
+            healthDisplay.transform.parent.gameObject.SetActive(false);
         }
     }
 
-    public void ReleaseOnDestroy()
+    public void OnEnemyDestroy(EnemyController enemy)
     {
+        if (enemy != this) return;
         currentNodePlaced.ReleaseNode();
         currentNodePlaced.ToggleNodeByType(false, VisualNodeType.ToggleEnemy);
     }
